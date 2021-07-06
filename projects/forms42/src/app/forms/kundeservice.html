@@ -1,3 +1,15 @@
-<div>
-    Hello world II
+<div class="kunder">
+    <table>
+        <tr>
+            <th></th>
+            <th>Navn</th>
+            <th>Adresse</th>
+        </tr>
+
+        <tr *ngFor="let item of [].constructor(4); let row = index">
+            <td></td>
+            <td><field row='{{row}}' name='navn' size='35' id='table' block='kunder'></field></td>
+            <td><field row='{{row}}' name='adresse' size='35' id='table' block='kunder'></field></td>
+        </tr>
+    </table>
 </div>
