@@ -1,0 +1,37 @@
+<table class="page">
+  <tr class="topbar" [ngStyle]="{'background-color': barcolor}">
+    <td>
+      <button class="toggle-button" [ngStyle]="{'color': btncolor, 'background-color': barcolor}" (click)="sidenav=!sidenav">
+        <div class="line" [ngStyle]="{'border-color': btncolor}"></div>
+        <div class="line" [ngStyle]="{'border-color': btncolor}"></div>
+        <div class="line" [ngStyle]="{'border-color': btncolor}"></div>
+      </button>
+    </td>
+
+    <td><!-- filler for formlist --></td>
+
+    <td class="menu">
+      <menuarea></menuarea>
+    </td>
+
+    <td>
+      <button class="close-button" [ngStyle]="{'color': btncolor, 'background-color': barcolor}" (click)="close();">X</button>
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <table class="formlist" [style.width]="sidenav ? '200px' : '1px'" [style.display]="sidenav ? 'block' : 'none'">
+            <formlist root="forms"></formlist>
+      </table>
+    </td>
+
+    <td class="form">
+      <table class="form">
+        <formarea></formarea>
+      </table>
+    </td>
+
+    <td><!-- filler for close-button --></td>
+  </tr>
+</table>

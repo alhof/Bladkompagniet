@@ -1,0 +1,125 @@
+/* You can add global styles to this file, and also import other style files */
+
+div
+{
+    font-size: 14px;
+}
+
+input, input:disabled, input[disabled="disabled"]
+{
+    border: none;
+    color: black;
+    font-size: 14px;
+    font-weight: normal;
+    background: transparent;
+    border-bottom: 1px dotted black;
+}
+
+input.mandatory
+{
+    border: none;
+    color: black;
+    font-size: 14px;
+    font-weight: normal;
+    background: transparent;
+    border-bottom: 1px solid black;
+}
+
+input:focus
+{
+    border: none;
+    font-size: 14px;
+    outline: 0 !important;
+    background: transparent;
+    border-bottom: 2px solid black;
+}
+
+input.invalid
+{
+    border: 2px;
+    font-size: 14px;
+    border-color:red;
+    border-style: solid;
+}
+
+select, select:disabled, select[disabled="disabled"]
+{
+    border: none;
+    color: black;
+    font-size: 14px;
+    font-weight: normal;
+    background: transparent;
+    border-bottom: 1px dotted black;
+}
+
+select.mandatory
+{
+    border: none;
+    color: black;
+    font-size: 14px;
+    font-weight: normal;
+    background: transparent;
+    border-bottom: 1px solid black;
+}
+
+select:focus
+{
+    border: none;
+    font-size: 14px;
+    outline: 0 !important;
+    background: transparent;
+    border-bottom: 2px solid black;
+}
+
+select.invalid
+{
+    border: 2px;
+    font-size: 14px;
+    border-color:red;
+    border-style: solid;
+}
+
+input[type="checkbox"]
+{
+    transform: scale(1.25);
+}
+
+input[type="radio"]
+{
+    transform: scale(1.25);
+}
+
+input.lov-search, input.lov-search.focus
+{
+    border: none;
+    color: black;
+    font-size: 14px;
+    font-weight: normal;
+    background: transparent;
+    border-bottom: 2px solid black;
+}
+
+
+input.lov-result, input.lov-result:disabled, input.lov-result[disabled="disabled"]
+{
+    border: none;
+    color: black;
+    font-size: 14px;
+    font-weight: normal;
+    background: transparent;
+}
+
+
+input.lov-result:focus
+{
+    border: none;
+    color: black;
+    font-size: 14px;
+    font-weight: normal;
+    background: transparent;
+    border-bottom: 1px dotted black;
+}
+
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
