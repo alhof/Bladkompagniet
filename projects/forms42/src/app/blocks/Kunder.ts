@@ -1,8 +1,9 @@
-import { Block, table, column, Column, field, FieldType, trigger, Trigger, FieldTriggerEvent } from 'forms42';
+import { Block, table, column, Column, field, FieldType, trigger, Trigger, FieldTriggerEvent, SQLTriggerEvent, Condition } from 'forms42';
 
 @table({name: "bk_kunder", limit: 'limit 100'})
 
 @column({name: "id"                 , type: Column.integer})
+@column({name: "bkku_id"            , type: Column.integer   , mandatory: true})
 @column({name: "abon_nr"            , type: Column.integer})
 @column({name: "konto_nr"           , type: Column.integer})
 @column({name: "navn"               , type: Column.varchar})
@@ -25,6 +26,33 @@ import { Block, table, column, Column, field, FieldType, trigger, Trigger, Field
 
 export class Kunder extends Block
 {
+    @trigger(Trigger.PreQuery)
+    public async prequery(event:SQLTriggerEvent) : Promise<boolean>
+    {
+        // Adresse is not a database field
+        // and not set as condition
+        this.searchfilter.forEach((filter) =>
+        {
+            if (filter.name == 'adresse')
+                event.stmt.whand(filter.name,filter.value);
+        });
+
+        let conditions:Condition[] = event.stmt.getCondition()?.split();
+
+        conditions.forEach((cond) =>
+        {
+            if (cond.column == 'navn')
+                cond.setCondition("to_tsvector('danish',navn) @@ websearch_to_tsquery('danish',:"+cond.placeholder+")");
+
+            if (cond.column == 'adresse')
+                cond.setCondition("to_tsvector('danish',coalesce(gadenavn,' ')||' '||coalesce(postnr,' ')||coalesce(postdistrikt,' ')||' '||coalesce(hus_nr::varchar,' ')||' '||coalesce(litra,' ')||' '||coalesce(etage,' ')) @@ websearch_to_tsquery('danish',:"+cond.placeholder+")");
+        });
+
+        return(true);
+    }
+
+
+
     @trigger(Trigger.PostChange,["gadenavn","hus_nr","litra","etage","postnr","postdistrikt"])
     public async adresse(event:FieldTriggerEvent) : Promise<boolean>
     {

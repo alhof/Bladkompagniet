@@ -1,15 +1,66 @@
+<div class="ctrl">
+    <span class='label-ctrl'>Type : </span><field name='type' block='ctrl'></field>
+    <span class='label-ctrl'>Fra : </span><field name='fra_dato' size='8'block='ctrl'></field>
+    <span class='label-ctrl'>Til : </span><field name='til_dato' size='8'block='ctrl'></field>
+</div>
+
 <div class="kunder">
+    <div class="kunder-table">
+        <table>
+            <tr>
+                <th></th>
+                <th>Navn</th>
+                <th>Adresse</th>
+            </tr>
+    
+            <tr *ngFor="let item of [].constructor(5); let row = index">
+                <td class='indicator' [style.background-color]='getRowIndicator("kunder",row)'></td>
+                <td><field row='{{row}}' name='navn'    size='35' id='table' block='kunder'></field></td>
+                <td><field row='{{row}}' name='adresse' size='35' id='table' block='kunder'></field></td>
+            </tr>
+        </table>    
+    </div>
+
+    <div class="kunder-detail">
+        <table>
+            <tr>
+                <td><div> <span class='label-kd'>Abon#     </span> : <field name='abon_nr'           size='8'  id='detail' block='kunder'></field></div></td>
+                <td><div> <span class='label-kd'>Konto#    </span> : <field name='konto_nr'          size='8'  id='detail' block='kunder'></field></div></td> 
+            </tr>
+            <tr>
+                <td><div> <span class='label-kd'>Co        </span> : <field name='co_navn'           size='20' id='detail' block='kunder'></field></div></td>
+                <td><div> <span class='label-kd'>Adresse   </span> : <field name='supl_adr'          size='20' id='detail' block='kunder'></field></div></td>  
+            </tr>
+            <tr>
+                <td><div> <span class='label-kd'>Kode      </span> : <field name='afleverings_kode'  size='6'  id='detail' block='kunder'></field></div></td>
+                <td><div> <span class='label-kd'>Tekst     </span> : <field name='afleverings_tekst' size='20' id='detail' block='kunder'></field></div></td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<div class="ordrer">
     <table>
         <tr>
             <th></th>
-            <th>Navn</th>
-            <th>Adresse</th>
+            <th>DistDato        </th>
+            <th>UdkomstDato     </th>
+            <th>Abol#           </th>
+            <th>Ordf#           </th>
+            <th>Subtype         </th>
+            <th>Produkt#        </th>
+            <th>Antal           </th>
         </tr>
 
-        <tr *ngFor="let item of [].constructor(4); let row = index">
-            <td></td>
-            <td><field row='{{row}}' name='navn' size='35' id='table' block='kunder'></field></td>
-            <td><field row='{{row}}' name='adresse' size='35' id='table' block='kunder'></field></td>
+        <tr *ngFor='let item of [].constructor(4); let row = index'>
+            <td class='indicator' [style.background-color]='getRowIndicator("ordrer",row)'></td>
+            <td><field row='{{row}}' name='dist_dato'          size='12' block='ordrer'></field></td>
+            <td><field row='{{row}}' name='udkomst_dato'       size='12' block='ordrer'></field></td>
+            <td><field row='{{row}}' name='abol_id'            size='12' block='ordrer'></field></td>
+            <td><field row='{{row}}' name='ordf_id'            size='12' block='ordrer'></field></td>
+            <td><field row='{{row}}' name='subtype'            size='12' block='ordrer'></field></td>
+            <td><field row='{{row}}' name='produkt_nr'         size='12' block='ordrer'></field></td>
+            <td><field row='{{row}}' name='leverings_antal'    size='12' block='ordrer'></field></td>
         </tr>
-    </table>
+  </table>
 </div>
