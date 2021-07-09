@@ -6,5 +6,12 @@
 */
 {
   "files": [],
-  "references": []
+  "references": [
+    {
+      "path": "./projects/forms42/tsconfig.app.json"
+    },
+    {
+      "path": "./projects/forms42/tsconfig.spec.json"
+    }
+]
 }

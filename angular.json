@@ -1,6 +1,117 @@
 {
-  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
-  "version": 1,
-  "newProjectRoot": "projects",
-  "projects": {}
+   "projects": {"forms42": {
+      "sourceRoot": "projects/forms42/src",
+      "prefix": "app",
+      "schematics": {},
+      "root": "projects/forms42",
+      "architect": {
+         "lint": {
+            "builder": "@angular-devkit/build-angular:tslint",
+            "options": {
+               "tsConfig": [
+                  "projects/forms42/tsconfig.app.json",
+                  "projects/forms42/tsconfig.spec.json",
+                  "projects/forms42/e2e/tsconfig.json"
+               ],
+               "exclude": ["**/node_modules/**"]
+            }
+         },
+         "test": {
+            "builder": "@angular-devkit/build-angular:karma",
+            "options": {
+               "assets": [
+                  "projects/forms42/src/favicon.ico",
+                  "projects/forms42/src/assets",
+                  {
+                     "output": "./assets/",
+                     "input": "./node_modules/forms42/src/lib/assets/",
+                     "glob": "**/*"
+                  }
+               ],
+               "karmaConfig": "projects/forms42/karma.conf.js",
+               "tsConfig": "projects/forms42/tsconfig.spec.json",
+               "polyfills": "projects/forms42/src/polyfills.ts",
+               "main": "projects/forms42/src/test.ts",
+               "styles": [
+                  "projects/forms42/src/styles.css",
+                  "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css"
+               ],
+               "scripts": []
+            }
+         },
+         "build": {
+            "configurations": {"production": {
+               "buildOptimizer": true,
+               "optimization": true,
+               "sourceMap": false,
+               "budgets": [
+                  {
+                     "type": "initial",
+                     "maximumError": "5mb",
+                     "maximumWarning": "2mb"
+                  },
+                  {
+                     "type": "anyComponentStyle",
+                     "maximumError": "10kb",
+                     "maximumWarning": "6kb"
+                  }
+               ],
+               "fileReplacements": [{
+                  "with": "projects/forms42/src/environments/environment.prod.ts",
+                  "replace": "projects/forms42/src/environments/environment.ts"
+               }],
+               "extractCss": true,
+               "namedChunks": false,
+               "vendorChunk": false,
+               "outputHashing": "all",
+               "extractLicenses": true
+            }},
+            "builder": "@angular-devkit/build-angular:browser",
+            "options": {
+               "assets": [
+                  "projects/forms42/src/favicon.ico",
+                  "projects/forms42/src/assets",
+                  {
+                     "output": "./assets/",
+                     "input": "./node_modules/forms42/src/lib/assets/",
+                     "glob": "**/*"
+                  }
+               ],
+               "outputPath": "dist/forms42",
+               "aot": true,
+               "tsConfig": "projects/forms42/tsconfig.app.json",
+               "index": "projects/forms42/src/index.html",
+               "polyfills": "projects/forms42/src/polyfills.ts",
+               "main": "projects/forms42/src/main.ts",
+               "styles": [
+                  "projects/forms42/src/styles.css",
+                  "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css"
+               ],
+               "scripts": []
+            }
+         },
+         "extract-i18n": {
+            "builder": "@angular-devkit/build-angular:extract-i18n",
+            "options": {"browserTarget": "forms42:build"}
+         },
+         "e2e": {
+            "configurations": {"production": {"devServerTarget": "forms42:serve:production"}},
+            "builder": "@angular-devkit/build-angular:protractor",
+            "options": {
+               "protractorConfig": "projects/forms42/e2e/protractor.conf.js",
+               "devServerTarget": "forms42:serve"
+            }
+         },
+         "serve": {
+            "configurations": {"production": {"browserTarget": "forms42:build:production"}},
+            "builder": "@angular-devkit/build-angular:dev-server",
+            "options": {"browserTarget": "forms42:build"}
+         }
+      },
+      "projectType": "application"
+   }},
+   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+   "defaultProject": "forms42",
+   "version": 1,
+   "newProjectRoot": "projects"
 }
