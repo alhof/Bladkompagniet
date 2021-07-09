@@ -1,9 +1,9 @@
-import { Block, table, column, Column, field, FieldType, trigger, Trigger, FieldTriggerEvent, SQLTriggerEvent, Condition } from 'forms42';
+import { key, Block, table, column, Column, field, FieldType, trigger, Trigger, FieldTriggerEvent, SQLTriggerEvent, Condition } from 'forms42';
 
+@key("primary",true,"id")
 @table({name: "bk_kunder", limit: 'limit 100'})
 
 @column({name: "id"                 , type: Column.integer})
-@column({name: "bkku_id"            , type: Column.integer   , mandatory: true})
 @column({name: "abon_nr"            , type: Column.integer})
 @column({name: "konto_nr"           , type: Column.integer})
 @column({name: "navn"               , type: Column.varchar})

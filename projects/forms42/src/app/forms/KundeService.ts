@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Kunder } from '../blocks/Kunder';
 import { Ordrer } from '../blocks/Ordrer';
-import { Form, Block, block, field, FieldType, FieldDefinition, show } from 'forms42';
+import { Form, Block, block, field, FieldType, trigger, Trigger, keytrigger,  KeyTriggerEvent, FieldTriggerEvent, SQLTriggerEvent, Condition, Column, DateUtils, keymap, join, show } from 'forms42';
 
 
 
@@ -15,12 +15,75 @@ import { Form, Block, block, field, FieldType, FieldDefinition, show } from 'for
 @field({name: "ctrl.fra_dato",  type: FieldType.date })
 @field({name: "ctrl.til_dato",  type: FieldType.date })
 
-@block({component: Kunder})
-@block({component: Ordrer})
+@join({master: {alias: "kunder", key: "primary"}, detail: {alias: "ordrer", key: "kunde"}})
 
 
 export class KundeService extends Form
 {
+    @block({component: Kunder})
+    private kunder:Kunder = null;
+
+    @block({component: Ordrer})
+    private ordrer:Ordrer = null;
+
+
+    @trigger(Trigger.PostChange,"ctrl")
+    public async ctrlChange(event:FieldTriggerEvent) : Promise<boolean>
+    {
+        if (this.connected && !this.kunder.querymode)
+            this.ordrer.executequery();
+
+        return(true);
+    }
+
+
+    @trigger(Trigger.PreQuery,"kunder")
+    public async prequeryKunder(event:SQLTriggerEvent) : Promise<boolean>
+    {
+        // Adresse is not a database field
+        // and not set as condition
+        this.kunder.searchfilter.forEach((filter) =>
+        {
+            if (filter.name == 'adresse')
+                event.stmt.whand(filter.name,filter.value);
+        });
+
+        let conditions:Condition[] = event.stmt.getCondition()?.split();
+
+        conditions.forEach((cond) =>
+        {
+            if (cond.column == 'navn')
+                cond.setCondition("to_tsvector('danish',navn) @@ websearch_to_tsquery('danish',:"+cond.placeholder+")");
+
+            if (cond.column == 'adresse')
+                cond.setCondition("to_tsvector('danish',coalesce(gadenavn,' ')||' '||coalesce(postnr,' ')||coalesce(postdistrikt,' ')||' '||coalesce(hus_nr::varchar,' ')||' '||coalesce(litra,' ')||' '||coalesce(etage,' ')) @@ websearch_to_tsquery('danish',:"+cond.placeholder+")");
+        });
+
+        return(true);
+    }
+
+
+    @trigger(Trigger.PreQuery,"ordrer")
+    public async prequeryOrdrer(event:SQLTriggerEvent) : Promise<boolean>
+    {
+        let dates:DateUtils = new DateUtils();
+        let ctrl:Block = this.getBlock("ctrl");
+
+        let datefr:string = ">= "+dates.format(ctrl.getValue(0,"fra_dato"));
+        let dateto:string = ">= "+dates.format(ctrl.getValue(0,"til_dato"));
+
+        event.stmt.whand("udkomst_dato",datefr,Column.date);
+        event.stmt.whand("udkomst_dato",dateto,Column.date);
+
+        let type:string = ctrl.getValue(0,"type");
+
+        if (type != null && type.length > 0)
+            event.stmt.whand("subtype",type.toUpperCase());
+
+        return(true);
+    }
+
+
     @show
     public async init() : Promise<boolean>
     {
@@ -34,6 +97,8 @@ export class KundeService extends Form
         types.add("");
         types.add("Salg");
         types.add("Abon");
+        types.add("Post");
+        types.add("Depo");
 
         ctrl.setPossibleValues("type",types,true);
         

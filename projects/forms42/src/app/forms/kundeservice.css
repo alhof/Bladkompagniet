@@ -9,6 +9,7 @@
 .kunder
 {
     display: flex;
+    justify-content: center;
 }
 
 
@@ -28,6 +29,7 @@
 {
     display: flex;
     margin-top: 50px;
+    justify-content: center;
 }
 
 .indicator
