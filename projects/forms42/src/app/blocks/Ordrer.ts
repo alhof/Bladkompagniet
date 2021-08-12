@@ -1,7 +1,7 @@
 import { alias, Block, table, column, key, Column, trigger, Trigger, SQLTriggerEvent } from "forms42";
 
 @alias("ordrer")
-@table({name: "bk_ordrer", order: "id"})
+@table({name: "bk_ordrer", order: "id", where: "bkku_id is not null"})
 
 @column({name: "id"                , type: Column.integer   , mandatory: true})
 @column({name: "bkku_id"           , type: Column.integer   , mandatory: true})
