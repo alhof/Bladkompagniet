@@ -1,82 +1,50 @@
 /* You can add global styles to this file, and also import other style files */
 
-div
+input, input:disabled, input[disabled="disabled"], select
 {
-    font-size: 14px;
-}
-
-input, input:disabled, input[disabled="disabled"]
-{
-    border: none;
-    color: black;
-    font-size: 14px;
-    font-weight: normal;
-    background: transparent;
-    border-bottom: 1px dotted black;
+  color: #222;
+  font-size: 15px;
+  font-weight: normal;
+  background: #fff;
+  border-radius: 4px;
+  padding: 12px 12px;
+  margin-right: 12px;
+  border: 1px solid #D2D6DC;
 }
 
 input.mandatory
 {
-    border: none;
-    color: black;
-    font-size: 14px;
-    font-weight: normal;
-    background: transparent;
-    border-bottom: 1px solid black;
+
 }
 
-input:focus
+input:focus, select:focus
 {
-    border: none;
-    font-size: 14px;
-    outline: 0 !important;
-    background: transparent;
-    border-bottom: 2px solid black;
+  border: 2px solid #e8de12;
+  outline: none;
 }
 
 input.invalid
 {
-    border: 2px;
-    font-size: 14px;
-    border-color:red;
-    border-style: solid;
 }
 
 select, select:disabled, select[disabled="disabled"]
 {
-    border: none;
-    color: black;
-    font-size: 14px;
-    font-weight: normal;
-    background: transparent;
-    border-bottom: 1px dotted black;
+
 }
 
 select.mandatory
 {
-    border: none;
-    color: black;
-    font-size: 14px;
-    font-weight: normal;
-    background: transparent;
-    border-bottom: 1px solid black;
+
 }
 
 select:focus
 {
-    border: none;
-    font-size: 14px;
-    outline: 0 !important;
-    background: transparent;
-    border-bottom: 2px solid black;
+
 }
 
 select.invalid
 {
-    border: 2px;
-    font-size: 14px;
-    border-color:red;
-    border-style: solid;
+
 }
 
 input[type="checkbox"]
@@ -122,4 +90,4 @@ input.lov-result:focus
 
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { margin: 0; font-family: "Inter", sans-serif; background: #EDF2F6; }

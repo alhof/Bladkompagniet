@@ -1,7 +1,17 @@
+<div class="tabs">
+  <ul>
+    <li><a href="#" class="active">Tabs 1</a></li>
+    <li><a href="#">Tabs 2</a></li>
+    <li><a href="#">Tabs 3</a></li>
+    <li><a href="#">Tabs 4</a></li>
+  </ul>
+</div>
+
+
 <div class="ctrl">
-    <span class='label-ctrl'>Type : </span><field name='type' block='ctrl'></field>
-    <span class='label-ctrl'>Fra : </span><field name='fra_dato' size='8'block='ctrl'></field>
-    <span class='label-ctrl'>Til : </span><field name='til_dato' size='8'block='ctrl'></field>
+    <div class="ctrl-item"><span class='label-ctrl'>Type</span><field name='type' block='ctrl'></field></div>
+    <div class="ctrl-item"><span class='label-ctrl'>Fra</span><svg width="20" height="20" fill="#222" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path></svg><field name='fra_dato' size='10'block='ctrl'></field></div>
+    <div class="ctrl-item"><span class='label-ctrl'>Til</span><svg width="20" height="20" fill="#222" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path></svg><field name='til_dato' size='10'block='ctrl'></field></div>
 </div>
 
 <div class="kunder">
@@ -12,28 +22,28 @@
                 <th>Navn</th>
                 <th>Adresse</th>
             </tr>
-    
+
             <tr *ngFor="let item of [].constructor(5); let row = index">
                 <td class='indicator' [style.background-color]='getRowIndicator("kunder",row)'></td>
                 <td><field row='{{row}}' name='navn'    size='35' id='table' block='kunder'></field></td>
                 <td><field row='{{row}}' name='adresse' size='35' id='table' block='kunder'></field></td>
             </tr>
-        </table>    
+        </table>
     </div>
 
     <div class="kunder-detail">
         <table>
             <tr>
-                <td><div> <span class='label-kd'>Abon#     </span> : <field name='abon_nr'           size='8'  id='detail' block='kunder'></field></div></td>
-                <td><div> <span class='label-kd'>Konto#    </span> : <field name='konto_nr'          size='8'  id='detail' block='kunder'></field></div></td> 
+                <td><div> <span class='label-kd'>Abon#     </span><field name='abon_nr'           size='8'  id='detail' block='kunder'></field></div></td>
+                <td><div> <span class='label-kd'>Konto#    </span><field name='konto_nr'          size='8'  id='detail' block='kunder'></field></div></td>
             </tr>
             <tr>
-                <td><div> <span class='label-kd'>Co        </span> : <field name='co_navn'           size='20' id='detail' block='kunder'></field></div></td>
-                <td><div> <span class='label-kd'>Adresse   </span> : <field name='supl_adr'          size='20' id='detail' block='kunder'></field></div></td>  
+                <td><div> <span class='label-kd'>Co        </span><field name='co_navn'           size='20' id='detail' block='kunder'></field></div></td>
+                <td><div> <span class='label-kd'>Adresse   </span><field name='supl_adr'          size='20' id='detail' block='kunder'></field></div></td>
             </tr>
             <tr>
-                <td><div> <span class='label-kd'>Kode      </span> : <field name='afleverings_kode'  size='6'  id='detail' block='kunder'></field></div></td>
-                <td><div> <span class='label-kd'>Tekst     </span> : <field name='afleverings_tekst' size='20' id='detail' block='kunder'></field></div></td>
+                <td><div> <span class='label-kd'>Kode      </span><field name='afleverings_kode'  size='6'  id='detail' block='kunder'></field></div></td>
+                <td><div> <span class='label-kd'>Tekst     </span><field name='afleverings_tekst' size='20' id='detail' block='kunder'></field></div></td>
             </tr>
         </table>
     </div>
