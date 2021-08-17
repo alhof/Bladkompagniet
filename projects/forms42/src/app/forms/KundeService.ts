@@ -27,11 +27,11 @@ export class KundeService extends Form
     private ordrer:Ordrer = null;
 
 
-    @trigger(Trigger.Key)
-    public async cleartrg(event:KeyTriggerEvent) : Promise<boolean>
+    @keytrigger(keymap.clearblock)
+    public async ignoreclear(event:KeyTriggerEvent) : Promise<boolean>
     {
-        console.log("clear form "+event.key);
-        return(true);
+        console.log("clear form "+event.block);
+        return(false);
     }
 
 
