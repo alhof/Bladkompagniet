@@ -1,6 +1,6 @@
 .tabs {
   border-bottom: 1px solid #EDF2F6;
-  margin: 12px 8px;
+  margin: 6px 0;
 }
 
 .tabs ul {
@@ -24,7 +24,7 @@
   border-top-left-radius: 4px;
   background: #EDF2F6;
   color: #222;
-  transition: all .2s;
+  transition: all .18s;
 }
 
 .tabs ul li a:hover {
@@ -32,7 +32,7 @@
 }
 
 .tabs ul li a.active {
-  background: #e8de12;
+  background: #E0E536;
   color: #222;
   font-weight: 700;
 }
@@ -91,13 +91,19 @@
     margin-top: 32px;
 }
 
+.mandatory-text {
+  padding: 16px;
+  color: #374151;
+  font-size: 14px;
+}
+
 .indicator
 {
     width: 8px;
     height: 8px;
     border-radius: 50%;
     display: inline-block;
-    margin-top: 18px;
+    margin-top: 16px;
 }
 
 field
