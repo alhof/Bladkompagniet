@@ -30,8 +30,8 @@ export class KundeService extends Form
     @keytrigger(keymap.clearblock)
     public async ignoreclear(event:KeyTriggerEvent) : Promise<boolean>
     {
-        console.log("clear form "+event.block);
-        return(false);
+        console.log("BK clear block "+event.block);
+        return(true);
     }
 
 
@@ -109,7 +109,7 @@ export class KundeService extends Form
         types.add("Depo");
 
         ctrl.setPossibleValues("type",types,true);
-        
+
         let fra:Date = new Date();
         let til:Date = new Date();
         fra.setDate(fra.getDate()-7);
