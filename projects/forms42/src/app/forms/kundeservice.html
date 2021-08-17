@@ -1,13 +1,3 @@
-<div class="tabs">
-  <ul>
-    <li><a href="#" class="active">Tabs 1</a></li>
-    <li><a href="#">Tabs 2</a></li>
-    <li><a href="#">Tabs 3</a></li>
-    <li><a href="#">Tabs 4</a></li>
-  </ul>
-</div>
-
-
 <div class="ctrl">
     <div class="ctrl-item"><span class='label-ctrl'>Type</span><field name='type' block='ctrl'></field></div>
     <div class="ctrl-item"><span class='label-ctrl'>Fra</span><svg width="20" height="20" fill="#222" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path></svg><field name='fra_dato' size='10'block='ctrl'></field></div>
@@ -32,7 +22,18 @@
     </div>
 
     <div class="kunder-detail">
+
         <table>
+          <tr>
+            <div class="tabs">
+              <ul>
+                <li><a href="#" class="active">Tabs 1</a></li>
+                <li><a href="#">Tabs 2</a></li>
+                <li><a href="#">Tabs 3</a></li>
+                <li><a href="#">Tabs 4</a></li>
+              </ul>
+            </div>
+          </tr>
             <tr>
                 <td><div> <span class='label-kd'>Abon#     </span><field name='abon_nr'           size='8'  id='detail' block='kunder'></field></div></td>
                 <td><div> <span class='label-kd'>Konto#    </span><field name='konto_nr'          size='8'  id='detail' block='kunder'></field></div></td>
@@ -53,12 +54,12 @@
     <table>
         <tr>
             <th></th>
-            <th>DistDato        </th>
-            <th>UdkomstDato     </th>
+            <th>DistDato *        </th>
+            <th>UdkomstDato *     </th>
             <th>Abol#           </th>
             <th>Ordf#           </th>
             <th>Subtype         </th>
-            <th>Produkt#        </th>
+            <th>Produkt# *        </th>
             <th>Antal           </th>
         </tr>
 
@@ -73,4 +74,7 @@
             <td><field row='{{row}}' name='leverings_antal'    size='12' block='ordrer'></field></td>
         </tr>
   </table>
+</div>
+<div class="mandatory-text">
+  * Disse felter er obligatoriske.
 </div>

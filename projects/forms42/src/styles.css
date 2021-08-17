@@ -2,47 +2,38 @@
 
 input, input:disabled, input[disabled="disabled"], select
 {
-  color: #222;
-  font-size: 15px;
   font-weight: normal;
-  background: #fff;
   border-radius: 4px;
-  padding: 12px 12px;
   margin-right: 12px;
+  padding: 8px;
+  font-size: 16px;
+  color: #222;
+  background-color: #fff;
   border: 1px solid #D2D6DC;
+  transition: all 0.18s ease;
 }
 
-input.mandatory
+/* input.mandatory
 {
-
-}
+} */
 
 input:focus, select:focus
 {
-  border: 2px solid #e8de12;
   outline: none;
+  box-shadow: 0 0 0 4px rgba(224, 229, 54, 0.8);
+ }
+
+input.invalid, select.invalid {
+ border: 1px solid #E53636;
 }
 
-input.invalid
+select:disabled, select[disabled="disabled"]
 {
-}
-
-select, select:disabled, select[disabled="disabled"]
-{
-
+  background: #D2D6DC;
+  color: #ddd;
 }
 
 select.mandatory
-{
-
-}
-
-select:focus
-{
-
-}
-
-select.invalid
 {
 
 }
