@@ -4,7 +4,6 @@ import { Ordrer } from '../blocks/Ordrer';
 import { Form, Block, block, field, FieldType, trigger, Trigger, keytrigger, KeyTriggerEvent, FieldTriggerEvent, SQLTriggerEvent, Condition, Column, DateUtils, keymap, join, show, connect } from 'forms42';
 
 
-
 @Component({
     templateUrl: "kundeservice.html",
     styleUrls: ['kundeservice.css']
@@ -30,8 +29,11 @@ export class KundeService extends Form
     @keytrigger(keymap.clearblock)
     public async ignoreclear(event:KeyTriggerEvent) : Promise<boolean>
     {
-        this.focus();
-        if (event.block == 'ctrl') return(false);
+        if (event.block == 'ctrl') 
+        {
+            this.focus();
+            return(false);
+        }
         return(true);
     }
 
@@ -46,11 +48,15 @@ export class KundeService extends Form
     }
 
 
-    @trigger(Trigger.PostQuery,"kunder")
-    public async alwaysQuery(event:FieldTriggerEvent) : Promise<boolean>
+    @keytrigger(keymap.executequery)
+    public async alwaysQuery(event:KeyTriggerEvent) : Promise<boolean>
     {
-        console.log("Found ? "+!this.kunder.empty())
-        if (!this.kunder.empty()) this.kunder.enterquery(true);
+        if (event.block == "kunder")
+        {
+            await this.kunder.executequery();
+            if (this.kunder.empty()) this.kunder.enterquery(true);
+            return(false);
+        }
         return(true);
     }
 
@@ -106,10 +112,8 @@ export class KundeService extends Form
     public async onConnect() : Promise<boolean>
     {
         this.kunder.enterquery();
-        console.log("Enter query");
         return(true);
     }
-
 
 
     @show
