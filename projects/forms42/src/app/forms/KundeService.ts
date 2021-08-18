@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Kunder } from '../blocks/Kunder';
 import { Ordrer } from '../blocks/Ordrer';
-import { Form, Block, block, field, FieldType, trigger, Trigger, keytrigger,  KeyTriggerEvent, FieldTriggerEvent, SQLTriggerEvent, Condition, Column, DateUtils, keymap, join, show } from 'forms42';
+import { Form, Block, block, field, FieldType, trigger, Trigger, keytrigger, KeyTriggerEvent, FieldTriggerEvent, SQLTriggerEvent, Condition, Column, DateUtils, keymap, join, show, connect } from 'forms42';
 
 
 
@@ -30,6 +30,7 @@ export class KundeService extends Form
     @keytrigger(keymap.clearblock)
     public async ignoreclear(event:KeyTriggerEvent) : Promise<boolean>
     {
+        this.focus();
         if (event.block == 'ctrl') return(false);
         return(true);
     }
@@ -41,6 +42,15 @@ export class KundeService extends Form
         if (this.connected && !this.kunder.querymode)
             this.ordrer.executequery();
 
+        return(true);
+    }
+
+
+    @trigger(Trigger.PostQuery,"kunder")
+    public async alwaysQuery(event:FieldTriggerEvent) : Promise<boolean>
+    {
+        console.log("Found ? "+!this.kunder.empty())
+        if (!this.kunder.empty()) this.kunder.enterquery(true);
         return(true);
     }
 
@@ -92,6 +102,16 @@ export class KundeService extends Form
     }
 
 
+    @connect
+    public async onConnect() : Promise<boolean>
+    {
+        this.kunder.enterquery();
+        console.log("Enter query");
+        return(true);
+    }
+
+
+
     @show
     public async init() : Promise<boolean>
     {
@@ -116,6 +136,7 @@ export class KundeService extends Form
 
         ctrl.setValue(0,"fra_dato",fra);
         ctrl.setValue(0,"til_dato",til);
+
         return(true);
     }
 }
