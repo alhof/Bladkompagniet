@@ -30,7 +30,7 @@ export class KundeService extends Form
     @keytrigger(keymap.clearblock)
     public async ignoreclear(event:KeyTriggerEvent) : Promise<boolean>
     {
-        console.log("BK clear block "+event.block);
+        if (event.block == 'ctrl') return(false);
         return(true);
     }
 
