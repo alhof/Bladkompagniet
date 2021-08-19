@@ -16,6 +16,7 @@ import { alias, Block, table, column, key, Column, trigger, Trigger, SQLTriggerE
 @column({name: "afleveringskode"   , type: Column.integer })
 @column({name: "afleverings_tekst" , type: Column.varchar })
 @column({name: "produkt_nr"        , type: Column.integer   , mandatory: true})
+@column({name: "produkt_navn"      , type: Column.varchar   , mandatory: true})
 @column({name: "leverings_antal"   , type: Column.integer })
 
 @key("primary",true,"id")
