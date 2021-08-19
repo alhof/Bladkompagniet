@@ -27,7 +27,7 @@ export class KundeService extends Form
 
 
     @keytrigger(keymap.clearblock)
-    public async ignoreclear(event:KeyTriggerEvent) : Promise<boolean>
+    public async clrctrl(event:KeyTriggerEvent) : Promise<boolean>
     {
         if (event.block == 'ctrl') 
         {
@@ -36,6 +36,16 @@ export class KundeService extends Form
         }
         return(true);
     }
+
+
+    @keytrigger(keymap.clearform)
+    public async clrform(event:KeyTriggerEvent) : Promise<boolean>
+    {
+        await this.clear();
+        this.kunder.enterquery();
+        return(false);
+    }
+
 
 
     @trigger(Trigger.PostChange,"ctrl")
