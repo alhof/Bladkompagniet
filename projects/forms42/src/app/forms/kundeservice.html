@@ -54,12 +54,12 @@
     <table>
         <tr>
             <th></th>
-            <th>DistDato *        </th>
-            <th>UdkomstDato *     </th>
+            <th>DistDato*       </th>
+            <th>UdkomstDato*    </th>
             <th>Abol#           </th>
             <th>Ordf#           </th>
             <th>Subtype         </th>
-            <th>Produkt# *        </th>
+            <th colspan="2">Produkt*</th>
             <th>Antal           </th>
         </tr>
 
@@ -67,11 +67,12 @@
             <td class='indicator' [style.background-color]='getRowIndicator("ordrer",row)'></td>
             <td><field row='{{row}}' name='dist_dato'          size='12' block='ordrer'></field></td>
             <td><field row='{{row}}' name='udkomst_dato'       size='12' block='ordrer'></field></td>
-            <td><field row='{{row}}' name='abol_id'            size='12' block='ordrer'></field></td>
-            <td><field row='{{row}}' name='ordf_id'            size='12' block='ordrer'></field></td>
+            <td><field row='{{row}}' name='abol_id'            size='5'  block='ordrer'></field></td>
+            <td><field row='{{row}}' name='ordf_id'            size='5'  block='ordrer'></field></td>
             <td><field row='{{row}}' name='subtype'            size='12' block='ordrer'></field></td>
-            <td><field row='{{row}}' name='produkt_nr'         size='12' block='ordrer'></field></td>
-            <td><field row='{{row}}' name='leverings_antal'    size='12' block='ordrer'></field></td>
+            <td><field row='{{row}}' name='produkt_nr'         size='5'  block='ordrer'></field></td>
+            <td><field row='{{row}}' name='produkt_navn'       size='12' block='ordrer'></field></td>
+            <td><field row='{{row}}' name='leverings_antal'    size='2'  block='ordrer'></field></td>
         </tr>
   </table>
 </div>
