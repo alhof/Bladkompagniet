@@ -62,11 +62,15 @@
 
         <tr *ngFor='let item of [].constructor(4); let row = index'>
             <td class='indicator' [style.background-color]='getRowIndicator("ordrer",row)'></td>
-            <td><field row='{{row}}' name='dist_dato'          size='12' block='ordrer'></field> 
+            <td><field row='{{row}}' name='dist_dato'          size='12' block='ordrer'></field>
                 <button (click)="this.ordrer.showDatePicker('dist_dato',$row)">x</button></td>
-            <td><field row='{{row}}' name='udkomst_dato'       size='12' block='ordrer'></field></td>
+
+            <td><field row='{{row}}' name='udkomst_dato'       size='12' block='ordrer'></field>
+                <button (click)="this.ordrer.showDatePicker('udkomst_dato',$row)">x</button></td>
+
             <td><field row='{{row}}' name='produkt_nr'         size='3'  block='ordrer'></field>
                 <field row='{{row}}' name='produkt_navn'       size='12' block='ordrer'></field></td>
+
             <td><field row='{{row}}' name='leverings_antal'    size='2'  block='ordrer'></field></td>
         </tr>
   </table>
