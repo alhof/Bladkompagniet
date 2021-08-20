@@ -1,7 +1,16 @@
-/* You can add global styles to this file, and also import other style files */
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  background: #edf2f6;
+}
 
-input, input:disabled, input[disabled="disabled"], select
-{
+input[type="text"],
+input[type="text"]:disabled,
+input[disabled="disabled"] {
   font-weight: normal;
   border-radius: 4px;
   margin-right: 12px;
@@ -9,76 +18,152 @@ input, input:disabled, input[disabled="disabled"], select
   font-size: 16px;
   color: #222;
   background-color: #fff;
-  border: 1px solid #D2D6DC;
+  border: 1px solid #d2d6dc;
   transition: all 0.18s ease;
 }
 
-/* input.mandatory
-{
-} */
-
-input:focus, select:focus
-{
-  outline: none;
-  box-shadow: 0 0 0 4px rgba(224, 229, 54, 0.8);
- }
-
-input.invalid, select.invalid {
- border: 1px solid #E53636;
+input[type="text"]:hover {
+  box-shadow: 0 0 0 1px rgba(224, 229, 54, 0.8);
+  cursor: text;
 }
 
-select:disabled, select[disabled="disabled"]
-{
-  background: #D2D6DC;
+input[type="text"]:focus,
+select:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(224, 229, 54, 0.8);
+}
+
+input[type="text"].invalid,
+select.invalid {
+  border: 1px solid #e53636;
+}
+
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background: #fff;
+  background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+  background-repeat: no-repeat;
+  background-position-x: 100%;
+  background-position-y: 5px;
+  border: 1px solid #d2d6dc;
+  border-radius: 4px;
+  margin-right: 16px;
+  padding: 8px;
+  padding-right: 16px;
+  font-size: 16px;
+}
+
+select:disabled,
+select[disabled="disabled"] {
+  background: #d2d6dc;
   color: #ddd;
 }
 
-select.mandatory
-{
-
+input[type="radio"] {
+  transform: scale(1.25);
 }
 
-input[type="checkbox"]
-{
-    transform: scale(1.25);
+/* Styled Checkbox */
+.styled-checkbox {
+  position: absolute;
+  opacity: 0;
 }
 
-input[type="radio"]
-{
-    transform: scale(1.25);
+.styled-checkbox + label {
+  position: relative;
+  cursor: pointer;
+  padding: 0;
 }
 
-input.lov-search, input.lov-search.focus
-{
-    border: none;
-    color: black;
-    font-size: 14px;
-    font-weight: normal;
-    background: transparent;
-    border-bottom: 2px solid black;
+.styled-checkbox + label:before {
+  content: "";
+  margin-right: 8px;
+  display: inline-block;
+  vertical-align: text-top;
+  width: 20px;
+  height: 20px;
+  background: #d2d6dc;
+  border-radius: 4px;
 }
 
-
-input.lov-result, input.lov-result:disabled, input.lov-result[disabled="disabled"]
-{
-    border: none;
-    color: black;
-    font-size: 14px;
-    font-weight: normal;
-    background: transparent;
+.styled-checkbox:hover + label:before {
+  background: #d2d6dc;
 }
 
-
-input.lov-result:focus
-{
-    border: none;
-    color: black;
-    font-size: 14px;
-    font-weight: normal;
-    background: transparent;
-    border-bottom: 1px dotted black;
+.styled-checkbox:hover + label {
+  color: #53585f;
 }
 
+.styled-checkbox:hover + label:after {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 9px;
+  background: #7aa3c2;
+  width: 2px;
+  height: 2px;
+  box-shadow: 2px 0 0 #7aa3c2, 4px 0 0 #7aa3c2, 4px -2px 0 #7aa3c2,
+    4px -4px 0 #7aa3c2, 4px -6px 0 #7aa3c2, 4px -8px 0 #7aa3c2;
+  transform: rotate(45deg);
+}
 
-html, body { height: 100%; }
-body { margin: 0; font-family: "Inter", sans-serif; background: #EDF2F6; }
+.styled-checkbox:focus + label:before {
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.12);
+}
+
+.styled-checkbox:checked + label:before {
+  background: #d0c710;
+}
+
+.styled-checkbox:disabled + label {
+  color: #b8b8b8;
+  cursor: not-allowed;
+}
+
+.styled-checkbox:disabled + label:before {
+  box-shadow: none;
+  background: #ddd;
+}
+
+.styled-checkbox:checked + label:after {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 9px;
+  background: #222;
+  width: 2px;
+  height: 2px;
+  box-shadow: 2px 0 0 #222, 4px 0 0 #222, 4px -2px 0 #222, 4px -4px 0 #222,
+    4px -6px 0 #222, 4px -8px 0 #222;
+  transform: rotate(45deg);
+}
+
+input.lov-search,
+input.lov-search.focus {
+  border: none;
+  color: black;
+  font-size: 14px;
+  font-weight: normal;
+  background: transparent;
+  border-bottom: 2px solid black;
+}
+
+input.lov-result,
+input.lov-result:disabled,
+input.lov-result[disabled="disabled"] {
+  border: none;
+  color: black;
+  font-size: 14px;
+  font-weight: normal;
+  background: transparent;
+}
+
+input.lov-result:focus {
+  border: none;
+  color: black;
+  font-size: 14px;
+  font-weight: normal;
+  background: transparent;
+  border-bottom: 1px dotted black;
+}
