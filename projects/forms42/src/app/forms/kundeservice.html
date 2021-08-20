@@ -1,7 +1,7 @@
 <div class="ctrl">
     <div class="ctrl-item"><span class='label-ctrl'>Type</span><field name='type' block='ctrl'></field></div>
-    <div class="ctrl-item"><span class='label-ctrl'>Fra</span><svg width="20" height="20" fill="#222" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path></svg><field name='fra_dato' size='10'block='ctrl'></field></div>
-    <div class="ctrl-item"><span class='label-ctrl'>Til</span><svg width="20" height="20" fill="#222" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path></svg><field name='til_dato' size='10'block='ctrl'></field></div>
+    <div class="ctrl-item"><span class='label-ctrl'>Fra</span><svg width="18" height="18" fill="#5F6971" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path></svg><field name='fra_dato' size='13'block='ctrl'></field></div>
+    <div class="ctrl-item"><span class='label-ctrl'>Til</span><svg width="18" height="18" fill="#5F6971" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path></svg><field name='til_dato' size='13'block='ctrl'></field></div>
 </div>
 
 <div class="kunder">
@@ -25,14 +25,6 @@
 
         <table>
           <tr>
-            <div class="tabs">
-              <ul>
-                <li><a href="#" class="active">Tabs 1</a></li>
-                <li><a href="#">Tabs 2</a></li>
-                <li><a href="#">Tabs 3</a></li>
-                <li><a href="#">Tabs 4</a></li>
-              </ul>
-            </div>
           </tr>
             <tr>
                 <td><div> <span class='label-kd'>Abon#     </span><field name='abon_nr'           size='8'  id='detail' block='kunder'></field></div></td>
@@ -49,34 +41,38 @@
         </table>
     </div>
 </div>
-
+<div class="tabs">
+  <ul>
+    <li><a href="#a" class="active">Leveret</a></li>
+    <li><a href="#a">Rapporteret</a></li>
+  </ul>
+</div>
 <div class="ordrer">
-    <table>
-        <tr>
-            <th></th>
-            <th>Distribueret   </th>
-            <th>Udkommet       </th>
-            <th>Produkt        </th>
-            <th>Antal          </th>
-        </tr>
+    <div>
+        <ul class="ordrer-head">
+            <li></li>
+            <li>Distribueret</li>
+            <li>Udkommet</li>
+            <li>Produkt        </li>
+            <li>Antal          <li>
+        </ul>
 
-        <tr *ngFor='let item of [].constructor(4); let row = index'>
-            <td class='indicator' [style.background-color]='getRowIndicator("ordrer",row)'></td>
-            <td><field row='{{row}}' name='dist_dato'          size='12' block='ordrer'></field>
-                <button (click)="this.ordrer.showDatePicker('dist_dato',$row)">x</button></td>
+        <ul *ngFor='let item of [].constructor(4); let row = index'>
+            <li class='indicator' [style.background-color]='getRowIndicator("ordrer",row)'></li>
+            <li><field row='{{row}}' name='dist_dato'          size='12' block='ordrer'></field>
+              <button (click)="this.ordrer.showDatePicker('dist_dato',$row)"><svg width="16" height="16" fill="#5F6971" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path></svg><span>Søg dato</span></button>
+                </li>
 
-            <td><field row='{{row}}' name='udkomst_dato'       size='12' block='ordrer'></field>
-                <button (click)="this.ordrer.showDatePicker('udkomst_dato',$row)">x</button></td>
+            <li><field row='{{row}}' name='udkomst_dato'       size='12' block='ordrer'></field><button (click)="this.ordrer.showDatePicker('udkomst_dato',$row)">
+              <svg width="16" height="16" fill="#5F6971" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path></svg><span>Søg dato</span></button></li>
 
-            <td><field row='{{row}}' name='produkt_nr'         size='3'  block='ordrer'></field>
-                <field row='{{row}}' name='produkt_navn'       size='20' block='ordrer'></field></td>
+            <li><field row='{{row}}' name='produkt_nr'         size='3'  block='ordrer'></field>
+                <field row='{{row}}' name='produkt_navn'       size='20' block='ordrer'></field></li>
 
-            <td><field row='{{row}}' name='leverings_antal'    size='2'  block='ordrer'></field></td>
-        </tr>
-  </table>
+            <li><field row='{{row}}' name='leverings_antal'    size='2'  block='ordrer'></field></li>
+        </ul>
+  </div>
 </div>
-<!--
-<div class="mandatory-text">
-  * Disse felter er obligatoriske.
-</div>
--->
+
+<!-- <input class="styled-checkbox" id="styled-checkbox-1" type="checkbox" value="value1">
+<label for="styled-checkbox-1">Leveret</label> -->
