@@ -1,7 +1,7 @@
 import { key, database, Block, table, column, Column, field, FieldType, trigger, Trigger, FieldTriggerEvent } from 'forms42';
 
 @key("primary",true,"id")
-@table({name: "bk_kunder", limit: 'limit 100'})
+@table({name: "ks.bk_kunder", limit: 'limit 100'})
 
 @column({name: "id"                 , type: Column.integer})
 @column({name: "abon_nr"            , type: Column.integer})

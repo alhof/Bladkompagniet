@@ -29,7 +29,7 @@ export class KundeService extends Form
     @keytrigger(keymap.clearblock)
     public async clrctrl(event:KeyTriggerEvent) : Promise<boolean>
     {
-        if (event.block == 'ctrl') 
+        if (event.block == 'ctrl')
         {
             this.focus();
             return(false);
@@ -67,6 +67,13 @@ export class KundeService extends Form
             if (this.kunder.empty()) this.kunder.enterquery(true);
             return(false);
         }
+
+        if (event.block == "ordrer")
+        {
+            this.kunder.sendKey(keymap.executequery);
+            return(false);
+        }
+
         return(true);
     }
 
@@ -84,7 +91,7 @@ export class KundeService extends Form
 
         let conditions:Condition[] = event.stmt.getCondition()?.split();
 
-        conditions.forEach((cond) =>
+        if (conditions) conditions.forEach((cond) =>
         {
             if (cond.column == 'navn')
                 cond.setCondition("to_tsvector('danish',navn) @@ websearch_to_tsquery('danish',:"+cond.placeholder+")");
