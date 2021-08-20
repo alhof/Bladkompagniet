@@ -14,7 +14,7 @@
             </tr>
 
             <tr *ngFor="let item of [].constructor(5); let row = index">
-                <li class='indicator' [style.height]='showRowIndicator("kunder",row) ? "10px" : "0"'></li>
+                <td><div class='indicator' [style.display]='showRowIndicator("kunder",row) ? "inline-block" : "none"'></div></td>
                 <td><field row='{{row}}' name='navn'    size='35' id='table' block='kunder'></field></td>
                 <td><field row='{{row}}' name='adresse' size='35' id='table' block='kunder'></field></td>
             </tr>
@@ -68,11 +68,13 @@
                 </span>
             </li>
             <li>Produkt</li>
-            <li>Antal  </li>
+            <li>Antal</li>
         </ul>
 
         <ul *ngFor='let item of [].constructor(4); let row = index'>
-            <li class='indicator' [style.height]='showRowIndicator("ordrer",row) ? "10px" : "0"'></li>
+            <li>
+              <div class='indicator' [style.display]='showRowIndicator("ordrer",row) ? "inline-block" : "none"'></div>
+            </li>
 
             <li><field row='{{row}}' name='dist_dato'          size='12' block='ordrer'></field></li>
             <li><field row='{{row}}' name='udkomst_dato'       size='12' block='ordrer'></field></li>
