@@ -143,12 +143,13 @@
 }
 
 .indicator {
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
   background: #e0e536;
   display: inline-block;
   margin-top: 16px;
+  margin-right: 4px;
   box-shadow: 0 0 0 2px rgba(224, 229, 54, 0.2);
 }
 
