@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { Application, Form, Theme } from 'forms42';
-import { defaultTheme } from '../../../../../FormsLibrary/dist/forms/lib/application/Themes';
+import { Application, Form, Theme, defaultTheme } from 'forms42';
 
 
 @Component({
@@ -17,7 +16,9 @@ export class ApplicationRoot
     constructor(private app:Application)
     {
         let theme:Theme = new defaultTheme();
-        theme.topbar = "red";
+
+        theme.topbar = "#1d252c";
+        app.theme = theme;
     }
 
     public get form() : Form
