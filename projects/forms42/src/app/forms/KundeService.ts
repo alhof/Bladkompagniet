@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Kunder } from '../blocks/Kunder';
 import { Ordrer } from '../blocks/Ordrer';
-import { Form, Block, block, field, FieldType, trigger, Trigger, keytrigger, KeyTriggerEvent, FieldTriggerEvent, SQLTriggerEvent, Condition, Column, DateUtils, keymap, join, show, connect } from 'forms42';
+import { database, Form, Block, block, field, FieldType, trigger, Trigger, keytrigger, KeyTriggerEvent, FieldTriggerEvent, SQLTriggerEvent, Condition, Column, DateUtils, keymap, join, show, connect } from 'forms42';
 
 
 @Component({
