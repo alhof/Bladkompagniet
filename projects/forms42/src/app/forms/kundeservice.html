@@ -52,27 +52,30 @@
         <ul class="ordrer-head">
             <li></li>
             <li>
-                Distribueret
-                <!--
-                <button (click)="this.ordrer.showDatePicker('dist_dato',-1)">
-                    <svg width="16" height="16" fill="#5F6971" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path></svg><span>Søg dato</span>
-                </button>
-                -->
+                <span *ngFor='let item of [].constructor(1); let row = index'>
+                    Distribueret
+                    <button (click)="this.ordrer.showDatePicker('dist_dato')">
+                        <svg width="16" height="16" fill="#5F6971" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path></svg>
+                    </button>
+                </span>
             </li>
-            <li>Udkommet</li>
-            <li>Produkt        </li>
-            <li>Antal          <li>
+            <li>
+                <span *ngFor='let item of [].constructor(1); let row = index'>
+                    Udkommet
+                    <button (click)="this.ordrer.showDatePicker('udkomst_dato')">
+                        <svg width="16" height="16" fill="#5F6971" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path></svg>
+                    </button>
+                </span>
+            </li>
+            <li>Produkt</li>
+            <li>Antal  </li>
         </ul>
 
         <ul *ngFor='let item of [].constructor(4); let row = index'>
             <li class='indicator' [style.height]='showRowIndicator("ordrer",row) ? "10px" : "0"'></li>
 
-            <li><field row='{{row}}' name='dist_dato'          size='12' block='ordrer'></field>
-              <button (click)="this.ordrer.showDatePicker('dist_dato',$row)"><svg width="16" height="16" fill="#5F6971" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path></svg><span>Søg dato</span></button>
-                </li>
-
-            <li><field row='{{row}}' name='udkomst_dato'       size='12' block='ordrer'></field><button (click)="this.ordrer.showDatePicker('udkomst_dato',$row)">
-              <svg width="16" height="16" fill="#5F6971" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path></svg><span>Søg dato</span></button></li>
+            <li><field row='{{row}}' name='dist_dato'          size='12' block='ordrer'></field></li>
+            <li><field row='{{row}}' name='udkomst_dato'       size='12' block='ordrer'></field></li>
 
             <li><field row='{{row}}' name='produkt_nr'         size='3'  block='ordrer'></field>
                 <field row='{{row}}' name='produkt_navn'       size='20' block='ordrer'></field></li>
