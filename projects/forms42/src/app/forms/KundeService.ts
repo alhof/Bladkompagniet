@@ -81,6 +81,21 @@ export class KundeService extends Form
     @trigger(Trigger.PreQuery,"kunder")
     public async prequeryKunder(event:SQLTriggerEvent) : Promise<boolean>
     {
+        let ok:boolean = false;
+
+        this.kunder.searchfilter.forEach((filter) =>
+        {
+            if (filter.name == "navn") ok = true;
+            if (filter.name == "abon_nr") ok = true;
+            if (filter.name == "konto_nr") ok = true;
+        });
+
+        if (!ok)
+        {
+            this.alert("Der skal søges på mindst et af felterne navn, adresse, abonent eller konto");
+            return(false);
+        }
+
         // Adresse is not a database field
         // and not set as condition
         this.kunder.searchfilter.forEach((filter) =>
