@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Kunder } from '../blocks/Kunder';
 import { Ordrer } from '../blocks/Ordrer';
-import { database, Form, Block, block, field, FieldType, trigger, Trigger, keytrigger, KeyTriggerEvent, FieldTriggerEvent, SQLTriggerEvent, Condition, Column, DateUtils, keymap, join, show, connect } from 'forms42';
+import { Form, Block, block, field, FieldType, trigger, Trigger, keytrigger, KeyTriggerEvent, FieldTriggerEvent, SQLTriggerEvent, Condition, Column, DateUtils, keymap, join, show, connect } from 'forms42';
 
 
 @Component({
@@ -29,11 +29,7 @@ export class KundeService extends Form
     @keytrigger(keymap.clearblock)
     public async clrctrl(event:KeyTriggerEvent) : Promise<boolean>
     {
-        if (event.block == 'ctrl')
-        {
-            this.focus();
-            return(false);
-        }
+        if (event.block == 'ctrl') return(false);
         return(true);
     }
 
@@ -86,6 +82,7 @@ export class KundeService extends Form
         this.kunder.searchfilter.forEach((filter) =>
         {
             if (filter.name == "navn") ok = true;
+            if (filter.name == "adresse") ok = true;
             if (filter.name == "abon_nr") ok = true;
             if (filter.name == "konto_nr") ok = true;
         });
@@ -126,7 +123,7 @@ export class KundeService extends Form
         let ctrl:Block = this.getBlock("ctrl");
 
         let datefr:string = ">= "+dates.format(ctrl.getValue(0,"fra_dato"));
-        let dateto:string = ">= "+dates.format(ctrl.getValue(0,"til_dato"));
+        let dateto:string = "<= "+dates.format(ctrl.getValue(0,"til_dato"));
 
         event.stmt.whand("udkomst_dato",datefr,Column.date);
         event.stmt.whand("udkomst_dato",dateto,Column.date);
