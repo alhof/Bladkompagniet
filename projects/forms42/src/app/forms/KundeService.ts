@@ -98,7 +98,7 @@ export class KundeService extends Form
         this.kunder.searchfilter.forEach((filter) =>
         {
             if (filter.name == 'adresse')
-                event.stmt.whand(filter.name,filter.value);
+                event.stmt.whand(filter.name,'"'+filter.value+'"');
         });
 
         let conditions:Condition[] = event.stmt.getCondition()?.split();
