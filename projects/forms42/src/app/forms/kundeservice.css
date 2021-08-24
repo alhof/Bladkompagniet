@@ -98,7 +98,7 @@
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: 20px 180px 180px 300px 80px;
+  grid-template-columns: 20px 180px 180px 325px 80px;
   align-items: center;
 }
 
