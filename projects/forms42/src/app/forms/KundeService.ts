@@ -19,10 +19,10 @@ import { Form, Block, block, field, FieldType, trigger, Trigger, keytrigger, Key
 
 export class KundeService extends Form
 {
-    @block({component: Kunder})
+    @block({component: Kunder, databaseopts: {insert: false, update: false, delete: false}})
     private kunder:Kunder = null;
 
-    @block({component: Ordrer})
+    @block({component: Ordrer, databaseopts: {insert: false, update: false, delete: false}})
     private ordrer:Ordrer = null;
 
 
