@@ -1,91 +1,22 @@
+<!--
 <div class="ctrl">
     <div class="ctrl-item"><span class='label-ctrl'>Type</span><field name='type' block='ctrl'></field></div>
     <div class="ctrl-item"><span class='label-ctrl'>Fra</span><svg width="18" height="18" fill="#5F6971" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path></svg><field name='fra_dato' size='13'block='ctrl'></field></div>
     <div class="ctrl-item"><span class='label-ctrl'>Til</span><svg width="18" height="18" fill="#5F6971" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path></svg><field name='til_dato' size='13'block='ctrl'></field></div>
-</div>
+</div>    
+-->
 
-<div class="kunder">
-    <div class="kunder-table">
+<div class="addresser">
+    <div class="addresser-table">
         <table>
             <tr>
                 <th></th>
-                <th>Navn</th>
                 <th>Adresse</th>
             </tr>
 
             <tr *ngFor="let item of [].constructor(5); let row = index">
-                <td><div class='indicator' [style.display]='showRowIndicator("kunder",row) ? "inline-block" : "none"'></div></td>
-                <td><field row='{{row}}' name='navn'    size='35' id='table' block='kunder'></field></td>
-                <td><field row='{{row}}' name='adresse' size='35' id='table' block='kunder'></field></td>
+                <td><div class='indicator' [style.display]='showRowIndicator("addresses",row) ? "inline-block" : "none"'></div></td>
+                <td><field row='{{row}}' name='street_name' size='35' id='table' block='addresses'></field></td>
             </tr>
         </table>
     </div>
-
-    <div class="kunder-detail">
-
-        <table>
-          <tr>
-          </tr>
-            <tr>
-                <td><div> <span class='label-kd'>Abon#     </span><field name='abon_nr'           size='8'  id='detail' block='kunder'></field></div></td>
-                <td><div> <span class='label-kd'>Konto#    </span><field name='konto_nr'          size='8'  id='detail' block='kunder'></field></div></td>
-            </tr>
-            <tr>
-                <td><div> <span class='label-kd'>Co        </span><field name='co_navn'           size='20' id='detail' block='kunder'></field></div></td>
-                <td><div> <span class='label-kd'>Adresse   </span><field name='supl_adr'          size='20' id='detail' block='kunder'></field></div></td>
-            </tr>
-            <tr>
-                <td><div> <span class='label-kd'>Kode      </span><field name='afleverings_kode'  size='6'  id='detail' block='kunder'></field></div></td>
-                <td><div> <span class='label-kd'>Tekst     </span><field name='afleverings_tekst' size='20' id='detail' block='kunder'></field></div></td>
-            </tr>
-        </table>
-    </div>
-</div>
-<div class="tabs">
-  <ul>
-    <li><a href="#a" onclick="return false;" class="active">Planlagt</a></li>
-    <li><a href="#a" onclick="return false;">Leveret</a></li>
-  </ul>
-</div>
-<div class="ordrer">
-    <div>
-        <ul class="ordrer-head">
-            <li></li>
-            <li>
-                <span *ngIf='true'>
-                    Distribueret
-                    <button (click)="this.ordrer.showDatePicker('dist_dato')">
-                        <svg width="16" height="16" fill="#5F6971" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path></svg>
-                    </button>
-                </span>
-            </li>
-            <li>
-                <span *ngIf='true'>
-                    Udkommet
-                    <button (click)="this.ordrer.showDatePicker('udkomst_dato')">
-                        <svg width="16" height="16" fill="#5F6971" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path></svg>
-                    </button>
-                </span>
-            </li>
-            <li>Produkt</li>
-            <li>Antal</li>
-        </ul>
-
-        <ul *ngFor='let item of [].constructor(6); let row = index'>
-            <li>
-              <div class='indicator' [style.display]='showRowIndicator("ordrer",row) ? "inline-block" : "none"'></div>
-            </li>
-
-            <li><field row='{{row}}' name='dist_dato'          size='12' block='ordrer'></field></li>
-            <li><field row='{{row}}' name='udkomst_dato'       size='12' block='ordrer'></field></li>
-
-            <li><field row='{{row}}' name='produkt_nr'         size='3'  block='ordrer'></field>
-                <field row='{{row}}' name='produkt_navn'       size='20' block='ordrer'></field></li>
-
-            <li><field row='{{row}}' name='leverings_antal'    size='2'  block='ordrer'></field></li>
-        </ul>
-  </div>
-</div>
-
-<!-- <input class="styled-checkbox" id="styled-checkbox-1" type="checkbox" value="value1">
-<label for="styled-checkbox-1">Leveret</label> -->
