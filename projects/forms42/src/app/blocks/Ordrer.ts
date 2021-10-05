@@ -1,4 +1,4 @@
-import { database, alias, Block, table, column, key, Column, trigger, Trigger, SQLTriggerEvent } from "forms42";
+import { alias, Block, table, column, key, Column, trigger, Trigger, SQLTriggerEvent } from "forms42";
 
 @alias("ordrer")
 @table({name: "ks.bk_ordrer", order: "dist_dato", where: "bkku_id is not null"})
@@ -21,8 +21,6 @@ import { database, alias, Block, table, column, key, Column, trigger, Trigger, S
 
 @key("primary",true,"id")
 @key("kunde",true,"bkku_id")
-
-@database({query: true, insert: false, update: false, delete: false})
 
 
 export class Ordrer extends Block
