@@ -1,7 +1,7 @@
 import { alias, Block, table, column, key, Column } from "forms42";
 
 @alias("addresses")
-@table({name: "ks.order_addresses", order: "id"})
+@table({name: "ks.order_addresses", order: "street_name,house_number,house_letter,floor,apartment"})
 
 @column({name: "id"            , type: Column.integer })
 @column({name: "husn_id"       , type: Column.integer })

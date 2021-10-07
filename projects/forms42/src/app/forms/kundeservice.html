@@ -6,8 +6,8 @@
 </div>    
 -->
 
-<div class="addresser">
-    <div class="addresser-table">
+<div class="addresses">
+    <div class="addresses-overview">
         <table>
             <tr>
                 <th></th>
@@ -16,7 +16,38 @@
 
             <tr *ngFor="let item of [].constructor(5); let row = index">
                 <td><div class='indicator' [style.display]='showRowIndicator("addresses",row) ? "inline-block" : "none"'></div></td>
-                <td><field row='{{row}}' name='street_name' size='35' id='table' block='addresses'></field></td>
+                <td><field row='{{row}}' name='address' size='35' id='table' block='addresses'></field></td>
             </tr>
         </table>
     </div>
+
+    <div class=addresses-details>
+        <table>
+            <tr>
+                <th>Adresse detajler</th>
+            </tr>
+            <tr>
+                <span class='label'>Vej    </span> : <field name='street_name'    size='12' block='addresses'></field>
+            </tr>
+            <tr>
+                <span class='label'>Nr   </span> :
+                <span>
+                    <field name='house_number'   size='12' block='addresses'></field>
+                    <field name='house_letter'   size='2'  block='addresses'></field>
+                </span>
+            </tr>
+            <tr>
+                <span class='label'>Etage     </span> : <field name='floor'     size='12' block='addresses'></field>                
+            </tr>
+            <tr>
+                <span class='label'>Lejlighed </span> : <field name='apartment' size='12' block='addresses'></field>                
+            </tr>
+            <tr>
+                <span class='label'>Postnr    </span> : <field name='zip_code'  size='12' block='addresses'></field>                
+            </tr>
+            <tr>
+                <span class='label'>By        </span> : <field name='city'      size='12' block='addresses'></field>
+            </tr>
+        </table>
+    </div>
+</div>
