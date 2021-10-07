@@ -172,3 +172,13 @@ input.lov-result:focus {
   background: transparent;
   border-bottom: 1px dotted black;
 }
+
+.indicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #e0e536;
+  display: inline-block;
+  margin-right: 4px;
+  box-shadow: 0 0 0 2px rgba(224, 229, 54, 0.2);
+}

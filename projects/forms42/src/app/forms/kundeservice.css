@@ -9,15 +9,16 @@
   
   .addresses-overview {
     display: flex;
-    padding-right: 16px;
+    padding-right: 24px;
   }
   
   .addresses-details {
     display: flex;
-    padding-left: 16px;
+    padding-left: 24px;
   }
 
   .label {
       width: 75px;
       display: inline-block;
   }
+  
