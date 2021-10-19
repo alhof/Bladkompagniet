@@ -1,90 +1,52 @@
 import { Component } from '@angular/core';
-import { Kunder } from '../blocks/Kunder';
-import { Ordrer } from '../blocks/Ordrer';
-import { Form, Block, block, field, FieldType, trigger, Trigger, keytrigger, KeyTriggerEvent, FieldTriggerEvent, SQLTriggerEvent, Condition, Column, DateUtils, keymap, join, show, connect } from 'forms42';
+import { Addresses } from '../blocks/Addresses';
+import { TextSearch } from '../classes/TextSearch';
+import { Form, block, field, FieldType, trigger, Trigger, SQLTriggerEvent, Condition } from 'forms42';
 
 
 @Component({
-    templateUrl: "kundeservice.html",
-    styleUrls: ['kundeservice.css']
+    templateUrl: "KundeService.html",
+    styleUrls: ['KundeService.css']
 })
 
-
-@field({name: "ctrl.type",      type: FieldType.text })
-@field({name: "ctrl.fra_dato",  type: FieldType.date })
-@field({name: "ctrl.til_dato",  type: FieldType.date })
-
-@join({master: {alias: "kunder", key: "primary"}, detail: {alias: "ordrer", key: "kunde"}})
+@field({name: "addresses.address", type: FieldType.text })
 
 
 export class KundeService extends Form
 {
-    @block({component: Kunder, databaseopts: {insert: false, update: false, delete: false}})
-    private kunder:Kunder = null;
+    private addrfilter:string;
+    private streetfilter:string;
 
-    @block({component: Ordrer, databaseopts: {insert: false, update: false, delete: false}})
-    private ordrer:Ordrer = null;
-
-
-    @keytrigger(keymap.clearblock)
-    public async clrctrl(event:KeyTriggerEvent) : Promise<boolean>
-    {
-        if (event.block == 'ctrl') return(false);
-        return(true);
-    }
+    @block({component: Addresses})
+    private addresses:Addresses = null;
 
 
-    @keytrigger(keymap.clearform)
-    public async clrform(event:KeyTriggerEvent) : Promise<boolean>
-    {
-        await this.clear();
-        this.kunder.enterquery();
-        return(false);
-    }
-
-
-
-    @trigger(Trigger.PostChange,"ctrl")
-    public async ctrlChange(event:FieldTriggerEvent) : Promise<boolean>
-    {
-        if (this.connected && !this.kunder.querymode)
-            this.ordrer.executequery();
-
-        return(true);
-    }
-
-
-    @keytrigger(keymap.executequery)
-    public async alwaysQuery(event:KeyTriggerEvent) : Promise<boolean>
-    {
-        if (event.block == "kunder")
-        {
-            await this.kunder.executequery();
-            if (this.kunder.empty()) this.kunder.enterquery(true);
-            return(false);
-        }
-
-        if (event.block == "ordrer")
-        {
-            this.kunder.sendKey(keymap.executequery);
-            return(false);
-        }
-
-        return(true);
-    }
-
-
-    @trigger(Trigger.PreQuery,"kunder")
+    @trigger(Trigger.PreQuery,"addresses")
     public async prequeryKunder(event:SQLTriggerEvent) : Promise<boolean>
     {
         let ok:boolean = false;
+        let ts:TextSearch = new TextSearch();
 
-        this.kunder.searchfilter.forEach((filter) =>
+        this.addresses.searchfilter.forEach((filter) =>
         {
-            if (filter.name == "navn") ok = true;
-            if (filter.name == "adresse") ok = true;
-            if (filter.name == "abon_nr") ok = true;
-            if (filter.name == "konto_nr") ok = true;
+            this.addrfilter = "";
+            this.streetfilter = "";
+            console.log("filter "+filter.name);
+
+            if (filter.name == "address") 
+            {
+                ok = true;
+                this.addrfilter = filter.value;
+                filter.value = ts.getWordList(filter.value);
+            }
+
+            if (filter.name == "street_name") 
+            {
+                ok = true;
+                this.streetfilter = filter.value;
+                filter.value = ts.getWordList(filter.value);
+                console.log("street_name "+filter.value);
+            }
         });
 
         if (!ok)
@@ -95,9 +57,9 @@ export class KundeService extends Form
 
         // Adresse is not a database field
         // and not set as condition
-        this.kunder.searchfilter.forEach((filter) =>
+        this.addresses.searchfilter.forEach((filter) =>
         {
-            if (filter.name == 'adresse')
+            if (filter.name == 'address')
                 event.stmt.whand(filter.name,'"'+filter.value+'"');
         });
 
@@ -105,71 +67,48 @@ export class KundeService extends Form
 
         if (conditions) conditions.forEach((cond) =>
         {
-            if (cond.column == 'navn')
-                cond.setCondition("to_tsvector('danish',navn) @@ websearch_to_tsquery('danish',:"+cond.placeholder+")");
+            if (cond.column == 'address')
+            {
+                let tsquery:string = ts.getQueryFunction();
+                let columns:string = "coalesce(street_name,' ')||' '||house_number||coalesce(house_letter,' ')||' '||coalesce(floor::varchar,' ')||' '||coalesce(apartment,' ')||' '||coalesce(Zip_Code,' ')||' '||coalesce(City,' ')";
+                cond.setCondition("to_tsvector('danish',"+columns+") @@ "+tsquery+"('danish',:"+cond.placeholder+")");
+            }
 
-            if (cond.column == 'adresse')
-                cond.setCondition("to_tsvector('danish',coalesce(gadenavn,' ')||' '||coalesce(postnr,' ')||' '||coalesce(postdistrikt,' ')||' '||coalesce(hus_nr::varchar,' ')||' '||coalesce(litra,' ')||' '||coalesce(etage,' ')) @@ websearch_to_tsquery('danish',:"+cond.placeholder+")");
+            if (cond.column == 'street_name')
+            {
+                let tsquery:string = ts.getQueryFunction();
+                let columns:string = "coalesce(street_name,' ')";
+                cond.setCondition("to_tsvector('danish',"+columns+") @@ "+tsquery+"('danish',:"+cond.placeholder+")");
+            }
         });
 
         return(true);
     }
 
 
-    @trigger(Trigger.PreQuery,"ordrer")
-    public async prequeryOrdrer(event:SQLTriggerEvent) : Promise<boolean>
+    @trigger(Trigger.PostQuery)
+    public async address(event:SQLTriggerEvent) : Promise<boolean>
     {
-        let dates:DateUtils = new DateUtils();
-        let ctrl:Block = this.getBlock("ctrl");
+        // Reset the filter values
+        this.addresses.searchfilter.forEach((filter) =>
+        {
+            if (filter.name == "address") filter.value = this.addrfilter;
+            if (filter.name == "street_name")  filter.value = this.streetfilter;
+        });
 
-        let datefr:string = ">= "+dates.format(ctrl.getValue(0,"fra_dato"));
-        let dateto:string = "<= "+dates.format(ctrl.getValue(0,"til_dato"));
+        let address:string = "";
+        address += this.addresses.getValue(event.record,"street_name")+" "; 
+        address += this.addresses.getValue(event.record,"house_number"); 
+        address += this.addresses.getValue(event.record,"house_letter")+" ";
+        address += this.addresses.getValue(event.record,"floor")+" "; 
+        address += this.addresses.getValue(event.record,"apartment")+" ";
+        address += this.addresses.getValue(event.record,"zip_code")+" ";
+        address += this.addresses.getValue(event.record,"city")+" ";
 
-        event.stmt.whand("udkomst_dato",datefr,Column.date);
-        event.stmt.whand("udkomst_dato",dateto,Column.date);
+        address = address.trim();
+        while(address.indexOf("  ") >= 0) address = address.replace("  "," ");
 
-        let type:string = ctrl.getValue(0,"type");
-
-        if (type != null && type.length > 0)
-            event.stmt.whand("subtype",type.toUpperCase());
-
-        return(true);
-    }
-
-
-    @connect
-    public async onConnect() : Promise<boolean>
-    {
-        this.kunder.enterquery();
-        return(true);
-    }
-
-
-    @show
-    public async init() : Promise<boolean>
-    {
-        let ctrl:Block = this.getBlock("ctrl");
-        await ctrl.createControlRecord();
-
-        ctrl.setFieldDefinition({name: "type", type: FieldType.dropdown});
-
-        let types:Set<string> = new Set<string>();
-
-        types.add("");
-        types.add("Salg");
-        types.add("Abon");
-        types.add("Post");
-        types.add("Depo");
-
-        ctrl.setPossibleValues("type",types,true);
-
-        let fra:Date = new Date();
-        let til:Date = new Date();
-        fra.setDate(fra.getDate()-7);
-
-        ctrl.setValue(0,"fra_dato",fra);
-        ctrl.setValue(0,"til_dato",til);
-
+        this.addresses.setValue(event.record,"address",address);
         return(true);
     }
 }
