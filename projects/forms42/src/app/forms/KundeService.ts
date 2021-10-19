@@ -76,6 +76,7 @@ export class KundeService extends Form
 
             if (cond.column == 'street_name')
             {
+                cond.setValue("islev");
                 let tsquery:string = ts.getQueryFunction();
                 let columns:string = "coalesce(street_name,' ')";
                 cond.setCondition("to_tsvector('danish',"+columns+") @@ "+tsquery+"('danish',:"+cond.placeholder+")");
