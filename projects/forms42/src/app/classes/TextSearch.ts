@@ -25,6 +25,7 @@ export class TextSearch
         {
             for (let i = 0; i < words.length; i++) 
             {
+                words[i] = words[i].trim();
                 crit += "& "+words[i]+":* ";
             }
         }
@@ -32,8 +33,9 @@ export class TextSearch
         {
             for (let i = 0; i < words.length; i++) 
             {
+                words[i] = words[i].trim();
                 if (words[i].endsWith("*")) crit += "& "+words[i]+":* ";
-                else if (words[i].endsWith("*")) crit += "& "+words[i]+":* ";
+                else if (words[i].endsWith("%")) crit += "& "+words[i]+":* ";
                 else crit += "& "+words[i]+" ";
             }
         }

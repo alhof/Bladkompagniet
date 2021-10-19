@@ -31,6 +31,7 @@ export class KundeService extends Form
         {
             this.addrfilter = "";
             this.streetfilter = "";
+            console.log("filter "+filter.name);
 
             if (filter.name == "address") 
             {
@@ -44,6 +45,7 @@ export class KundeService extends Form
                 ok = true;
                 this.streetfilter = filter.value;
                 filter.value = ts.getWordList(filter.value);
+                console.log("street_name "+filter.value);
             }
         });
 
@@ -75,7 +77,7 @@ export class KundeService extends Form
             if (cond.column == 'street_name')
             {
                 let tsquery:string = ts.getQueryFunction();
-                let columns:string = "coalesce(street_name,' ')||' '||house_number||coalesce(house_letter,' ')||' '||coalesce(floor::varchar,' ')||' '||coalesce(apartment,' ')||' '||coalesce(Zip_Code,' ')||' '||coalesce(City,' ')";
+                let columns:string = "coalesce(street_name,' ')";
                 cond.setCondition("to_tsvector('danish',"+columns+") @@ "+tsquery+"('danish',:"+cond.placeholder+")");
             }
         });
