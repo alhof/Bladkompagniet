@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
+import { Actions } from '../blocks/Actions';
 import { Addresses } from '../blocks/Addresses';
 import { TextSearch } from '../classes/TextSearch';
-import { Form, block, field, FieldType, trigger, Trigger, SQLTriggerEvent, Condition } from 'forms42';
+import { Form, block, join, field, FieldType, trigger, Trigger, SQLTriggerEvent, Condition } from 'forms42';
 
 
 @Component({
@@ -10,42 +11,39 @@ import { Form, block, field, FieldType, trigger, Trigger, SQLTriggerEvent, Condi
 })
 
 @field({name: "addresses.address", type: FieldType.text })
+@join({master: {alias: "addresses", key: "primary"}, detail: {alias: "actions", key: "address"}})
 
 
 export class KundeService extends Form
 {
-    private addrfilter:string;
-    private streetfilter:string;
-
     @block({component: Addresses})
     private addresses:Addresses = null;
+
+    @block({component: Actions})
+    private actions:Actions = null;
 
 
     @trigger(Trigger.PreQuery,"addresses")
     public async prequeryKunder(event:SQLTriggerEvent) : Promise<boolean>
     {
+        let streetq:string = null;
+        let addressq:string = null;
+
         let ok:boolean = false;
         let ts:TextSearch = new TextSearch();
 
         this.addresses.searchfilter.forEach((filter) =>
         {
-            this.addrfilter = "";
-            this.streetfilter = "";
-            console.log("filter "+filter.name);
-
             if (filter.name == "address") 
             {
                 ok = true;
-                this.addrfilter = filter.value;
-                filter.value = ts.getWordList(filter.value);
+                addressq = ts.getWordList(filter.value);
             }
 
             if (filter.name == "street_name") 
             {
                 ok = true;
-                this.streetfilter = filter.value;
-                filter.value = ts.getWordList(filter.value);
-                console.log("street_name "+filter.value);
+                streetq = ts.getWordList(filter.value);
             }
         });
 
@@ -69,6 +67,7 @@ export class KundeService extends Form
         {
             if (cond.column == 'address')
             {
+                cond.setValue(addressq);
                 let tsquery:string = ts.getQueryFunction();
                 let columns:string = "coalesce(street_name,' ')||' '||house_number||coalesce(house_letter,' ')||' '||coalesce(floor::varchar,' ')||' '||coalesce(apartment,' ')||' '||coalesce(Zip_Code,' ')||' '||coalesce(City,' ')";
                 cond.setCondition("to_tsvector('danish',"+columns+") @@ "+tsquery+"('danish',:"+cond.placeholder+")");
@@ -76,7 +75,7 @@ export class KundeService extends Form
 
             if (cond.column == 'street_name')
             {
-                cond.setValue("islev");
+                cond.setValue(streetq);
                 let tsquery:string = ts.getQueryFunction();
                 let columns:string = "coalesce(street_name,' ')";
                 cond.setCondition("to_tsvector('danish',"+columns+") @@ "+tsquery+"('danish',:"+cond.placeholder+")");
@@ -90,13 +89,6 @@ export class KundeService extends Form
     @trigger(Trigger.PostQuery)
     public async address(event:SQLTriggerEvent) : Promise<boolean>
     {
-        // Reset the filter values
-        this.addresses.searchfilter.forEach((filter) =>
-        {
-            if (filter.name == "address") filter.value = this.addrfilter;
-            if (filter.name == "street_name")  filter.value = this.streetfilter;
-        });
-
         let address:string = "";
         address += this.addresses.getValue(event.record,"street_name")+" "; 
         address += this.addresses.getValue(event.record,"house_number"); 

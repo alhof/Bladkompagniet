@@ -1,10 +1,11 @@
 import { alias, Block, table, column, key, Column } from "forms42";
 
 @alias("actions")
-@table({name: "order_actions", order: "id"})
+@table({name: "order_actions", order: "name"})
 
 @column({name: "id"                        , type: Column.integer })
 @column({name: "orad_id"                   , type: Column.integer })
+@column({name: "product"                   , type: Column.varchar })
 @column({name: "action_type"               , type: Column.varchar })
 @column({name: "action_location_type"      , type: Column.varchar })
 @column({name: "order_type"                , type: Column.varchar })
@@ -25,9 +26,9 @@ import { alias, Block, table, column, key, Column } from "forms42";
 @column({name: "dimension_3"               , type: Column.decimal })
 @column({name: "weight"                    , type: Column.integer })
 @column({name: "size_category"             , type: Column.varchar })
-@column({name: "distribution_date_planned" , type: Column.datetime})
-@column({name: "eta_planned"               , type: Column.datetime})
-@column({name: "action_date_time"          , type: Column.datetime})
+@column({name: "distribution_date_planned" , type: Column.date})
+@column({name: "eta_planned"               , type: Column.date})
+@column({name: "action_date_time"          , type: Column.date})
 @column({name: "action_longitude"          , type: Column.varchar })
 @column({name: "action_latitude"           , type: Column.varchar })
 @column({name: "action_swipe_distance"     , type: Column.integer })
@@ -51,8 +52,9 @@ import { alias, Block, table, column, key, Column } from "forms42";
 @column({name: "rettet_dato"               , type: Column.datetime})
 @column({name: "rettet_af"                 , type: Column.varchar })
 
+@key("address",false,"orad_id")
 
 
-export class actions extends Block
+export class Actions extends Block
 {
 }
