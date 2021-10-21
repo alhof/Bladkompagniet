@@ -19,6 +19,9 @@
                 <th style="padding-left: 100px;">Address details</th>
             </tr>
             <tr>
+                <span class='label'>Postnr    </span> : <field name='zip_code'  size='3' block='addresses'></field>                
+            </tr>
+            <tr>
                 <span class='label'>Vej    </span> : <field name='street_name'    size='25' block='addresses'></field>
             </tr>
             <tr>
@@ -35,9 +38,6 @@
                 <span class='label'>Lejlighed </span> : <field name='apartment' size='2' block='addresses'></field>                
             </tr>
             <tr>
-                <span class='label'>Postnr    </span> : <field name='zip_code'  size='3' block='addresses'></field>                
-            </tr>
-            <tr>
                 <span class='label'>By        </span> : <field name='city'      size='16' block='addresses'></field>
             </tr>
         </table>
@@ -49,28 +49,30 @@
         <tr>
             <th></th>
             <th>Name</th>
+            <th>Ref</th>
             <th>Product</th>
+            <th>Subtitle</th>
             <th>Type</th>
             <th>A/L</th>
             <th>Planned</th>
-            <th>Ref</th>
             <th>Code</th>
             <th>Text</th>
-            <th>Label</th>
+            <th>Lbl</th>
             <th>Info</th>
         </tr>
     
         <tr *ngFor='let item of [].constructor(4); let row = index'>
             <td><div class='indicator' [style.display]='showRowIndicator("actions",row) ? "inline-block" : "none"'></div></td>
-            <td><field row='{{row}}' name='name'                            size='12' id='table' block='actions'></field></td>
-            <td><field row='{{row}}' name='product'                         size='12' id='table' block='actions'></field></td>
-            <td><field row='{{row}}' name='action_type'                     size='12' id='table' block='actions'></field></td>
+            <td><field row='{{row}}' name='name'                            size='16' id='table' block='actions'></field></td>
+            <td><field row='{{row}}' name='order_reference'                 size='12' id='table' block='actions'></field></td>
+            <td><field row='{{row}}' name='product_name'                    size='12' id='table' block='actions'></field></td>
+            <td><field row='{{row}}' name='product_subtitle'                size='12' id='table' block='actions'></field></td>
+            <td><field row='{{row}}' name='action_type'                     size='8'  id='table' block='actions'></field></td>
             <td><field row='{{row}}' name='order_type'                      size='3'  id='table' block='actions'></field></td>
             <td><field row='{{row}}' name='distribution_date_planned'       size='8'  id='table' block='actions'></field></td>
-            <td><field row='{{row}}' name='order_reference'                 size='12' id='table' block='actions'></field></td>
             <td><field row='{{row}}' name='additional_delivery_code'        size='3'  id='table' block='actions'></field></td>
             <td><field row='{{row}}' name='additional_delivery_text'        size='12' id='table' block='actions'></field></td>
-            <td><field row='{{row}}' name='order_label'                     size='12' id='table' block='actions'></field></td>
+            <td><field row='{{row}}' name='order_label'                     size='2'  id='table' block='actions'></field></td>
             <td><field row='{{row}}' name='access_information'              size='12' id='table' block='actions'></field></td>
         </tr>
     </table>

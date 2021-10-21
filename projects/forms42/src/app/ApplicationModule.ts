@@ -8,7 +8,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // Formsdefinitions
 
 import { KundeService } from './forms/KundeService';
-import { KundeService_old } from './forms/KundeService_old';
+import { ActionDetails } from './forms/ActionDetails';
 
 
 @NgModule({
@@ -16,7 +16,7 @@ import { KundeService_old } from './forms/KundeService_old';
     ApplicationRoot,
     BlockDefinitions,
     KundeService,
-    KundeService_old
+    ActionDetails
   ],
   imports: [
     FormsLibrary,

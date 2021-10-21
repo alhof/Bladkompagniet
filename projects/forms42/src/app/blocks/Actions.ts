@@ -1,11 +1,12 @@
 import { alias, Block, table, column, key, Column } from "forms42";
 
 @alias("actions")
-@table({name: "order_actions", order: "name"})
+@table({name: "order_actions", order: "distribution_date_planned desc, name"})
 
 @column({name: "id"                        , type: Column.integer })
 @column({name: "orad_id"                   , type: Column.integer })
-@column({name: "product"                   , type: Column.varchar })
+@column({name: "product_name"              , type: Column.varchar })
+@column({name: "product_subtitle"          , type: Column.varchar })
 @column({name: "action_type"               , type: Column.varchar })
 @column({name: "action_location_type"      , type: Column.varchar })
 @column({name: "order_type"                , type: Column.varchar })
