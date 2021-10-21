@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Actions } from '../blocks/Actions';
 import { Addresses } from '../blocks/Addresses';
 import { TextSearch } from '../classes/TextSearch';
-import { Form, block, connect, join, field, FieldType, trigger, Trigger, keytrigger, keymap, KeyTriggerEvent, SQLTriggerEvent, Statement, Condition } from 'forms42';
+import { Form, block, connect, join, field, FieldType, trigger, Trigger, keytrigger, keymap, listofvalues, ListOfValues, KeyTriggerEvent, SQLTriggerEvent, Statement, Condition, Column, Case } from 'forms42';
 
 
 @Component({
@@ -56,24 +56,26 @@ export class KundeService extends Form
                 {
                     stmt = new Statement(
                         `
-                        select count(*) from ks.order_addresses
+                        select count(distinct street_name) from ks.order_addresses
                         where zip_code = :zipcode 
                         and to_tsvector('danish',street_name) @@ to_tsquery('danish',:stname)
                         `
-                      ).bind("zipcode",zipcode).bind("stname",stname);
+                      ).bind("zipcode",zipcode,Column.varchar).bind("stname",stname,Column.varchar);
                 }
                 else
                 {
                     stmt = new Statement(
                         `
-                        select count(*) from ks.order_addresses
+                        select count(distinct street_name) from ks.order_addresses
                         where to_tsvector('danish',street_name) @@ to_tsquery('danish',:stname)
                         `
-                      ).bind("stname",stname);
+                      ).bind("stname",stname,Column.varchar);
                 }
 
                 let stnames:number = await this.execute(stmt,true,true);
-                console.log("Steetnames: "+stnames);
+                console.log("SteetNames#: "+stnames);
+
+                this.addresses.showListOfValues("street_name");
             }
         }
 
@@ -98,6 +100,52 @@ export class KundeService extends Form
         }
 
         return(true);
+    }
+
+
+    @listofvalues("addresses.street_name")
+    public streetNames() : ListOfValues
+    {
+        let lov:ListOfValues = null;
+        let record:number = this.addresses.record;
+        let zipcode:string = this.addresses.getValue(record,"zip_code");
+
+        if (zipcode != null && zipcode.trim().length > 0)
+        {
+            lov = 
+            {
+                minlen: 2,
+                autoquery: true,
+                title: "Street Names",
+                case: Case.mixed,
+                sql: 
+                    `
+                    select count(distinct street_name) from ks.order_addresses
+                    where zip_code = :zipcode 
+                    and to_tsvector('danish',street_name) @@ to_tsquery('danish',:stname)
+                    `,
+                fieldmap: new Map<string,string>().set("street_name","street_name"),
+                bindvalues: [{name: "zipcode", value: zipcode, type: Column.varchar}]    
+            }
+        }
+        else
+        {
+            lov = 
+            {
+                minlen: 2,
+                autoquery: true,
+                title: "Street Names",
+                case: Case.mixed,
+                sql: 
+                    `
+                    select count(distinct street_name) from ks.order_addresses
+                    where to_tsvector('danish',street_name) @@ to_tsquery('danish',:stname)
+                    `,
+                fieldmap: new Map<string,string>().set("street_name","street_name")
+            }
+        }
+
+        return(lov);
     }
 
 
