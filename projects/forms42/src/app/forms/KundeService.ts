@@ -51,11 +51,6 @@ export class KundeService extends Form
             let zipcode:string = this.addresses.getValue(event.record,"zip_code");
 
             stname = ts.getWordList(stname);
-            let test:any = ts.getWordList;
-
-            console.log("test: "+test.constructor.name);
-            let testq:string = test("hello*");
-            console.log("testq: "+testq);
 
             if (stname != null && stname.trim().length > 0)
             {
@@ -117,6 +112,7 @@ export class KundeService extends Form
     public streetNames() : ListOfValues
     {
         let lov:ListOfValues = null;
+        let ts:TextSearch = new TextSearch();
         let record:number = this.addresses.record;
         let zipcode:string = this.addresses.getValue(record,"zip_code");
         let stname:string = this.addresses.getValue(record,"street_name");
@@ -128,13 +124,14 @@ export class KundeService extends Form
                 minlen: 2,
                 value: stname,
                 autoquery: true,
+                modfunc: ts.getWordList,
                 title: "Street Names",
                 case: Case.mixed,
                 sql: 
                     `
                     select street_name, zip_code||' '||street_name from ks.street_names
                     where zip_code = :zipcode 
-                    and to_tsvector('danish',street_name) @@ to_tsquery('danish',:filter||':*')
+                    and to_tsvector('danish',street_name) @@ to_tsquery('danish',:filter)
                     `,
                 fieldmap: new Map<string,string>().set("street_name","street_name"),
                 bindvalues: [{name: "zipcode", value: zipcode, type: Column.varchar}]    
@@ -147,12 +144,13 @@ export class KundeService extends Form
                 minlen: 2,
                 value: stname,
                 autoquery: true,
+                modfunc: ts.getWordList,
                 title: "Street Names",
                 case: Case.mixed,
                 sql: 
                     `
                     select street_name, zip_code||' '||street_name from ks.street_names
-                    where to_tsvector('danish',street_name) @@ to_tsquery('danish',:filter||':*')
+                    where to_tsvector('danish',street_name) @@ to_tsquery('danish',:filter)
                     `,
                 fieldmap: new Map<string,string>().set("street_name","street_name")
             }
