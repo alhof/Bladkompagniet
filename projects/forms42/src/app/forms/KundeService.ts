@@ -51,6 +51,11 @@ export class KundeService extends Form
             let zipcode:string = this.addresses.getValue(event.record,"zip_code");
 
             stname = ts.getWordList(stname);
+            let test:any = ts.getWordList;
+
+            console.log("test: "+test.constructor.name);
+            let testq:string = test("hello*");
+            console.log("testq: "+testq);
 
             if (stname != null && stname.trim().length > 0)
             {
@@ -78,9 +83,6 @@ export class KundeService extends Form
 
                 stmt.rows(2);
                 let stnames:string[] = await this.execute(stmt,false,false);
-
-                console.log("SteetNames#: "+stnames.length);
-                console.log(JSON.stringify(stnames));
 
                 if (stnames.length == 1) this.addresses.setValue(0,"street_name",stnames[0]["street_name"]);
                 else this.addresses.showListOfValues("street_name");
@@ -132,7 +134,7 @@ export class KundeService extends Form
                     `
                     select street_name, zip_code||' '||street_name from ks.street_names
                     where zip_code = :zipcode 
-                    and to_tsvector('danish',street_name) @@ to_tsquery('danish',:filter)
+                    and to_tsvector('danish',street_name) @@ to_tsquery('danish',:filter||':*')
                     `,
                 fieldmap: new Map<string,string>().set("street_name","street_name"),
                 bindvalues: [{name: "zipcode", value: zipcode, type: Column.varchar}]    
@@ -150,7 +152,7 @@ export class KundeService extends Form
                 sql: 
                     `
                     select street_name, zip_code||' '||street_name from ks.street_names
-                    where to_tsvector('danish',street_name) @@ to_tsquery('danish',:filter)
+                    where to_tsvector('danish',street_name) @@ to_tsquery('danish',:filter||':*')
                     `,
                 fieldmap: new Map<string,string>().set("street_name","street_name")
             }
