@@ -16,6 +16,7 @@ export class TextSearch
 
     public getWordList(crit:string, trunc?:boolean) : string
     {
+        if (crit == null) return(null);
         if (trunc == null) trunc = false;
         let words:string[] = crit.split(" ");
 

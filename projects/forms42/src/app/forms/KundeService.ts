@@ -45,8 +45,12 @@ export class KundeService extends Form
     {
         if (this.addresses.querymode && event.field == "street_name")
         {
+            let ts:TextSearch = new TextSearch();
+
             let stname:string = this.addresses.getValue(event.record,event.field);
             let zipcode:string = this.addresses.getValue(event.record,"zip_code");
+
+            stname = ts.getWordList(stname);
 
             if (stname != null && stname.trim().length > 0)
             {
@@ -56,26 +60,30 @@ export class KundeService extends Form
                 {
                     stmt = new Statement(
                         `
-                        select count(distinct street_name) from ks.order_addresses
+                        select street_name from ks.street_names
                         where zip_code = :zipcode 
                         and to_tsvector('danish',street_name) @@ to_tsquery('danish',:stname)
                         `
-                      ).bind("zipcode",zipcode,Column.varchar).bind("stname",stname,Column.varchar);
+                    ).bind("zipcode",zipcode,Column.varchar).bind("stname",stname,Column.varchar);
                 }
                 else
                 {
                     stmt = new Statement(
                         `
-                        select count(distinct street_name) from ks.order_addresses
+                        select street_name from ks.street_names
                         where to_tsvector('danish',street_name) @@ to_tsquery('danish',:stname)
                         `
-                      ).bind("stname",stname,Column.varchar);
+                    ).bind("stname",stname,Column.varchar);
                 }
 
-                let stnames:number = await this.execute(stmt,true,true);
-                console.log("SteetNames#: "+stnames);
+                stmt.rows(2);
+                let stnames:string[] = await this.execute(stmt,false,false);
 
-                //this.addresses.showListOfValues("street_name");
+                console.log("SteetNames#: "+stnames.length);
+                console.log(JSON.stringify(stnames));
+
+                if (stnames.length == 1) this.addresses.setValue(0,"street_name",stnames[0]["street_name"]);
+                else this.addresses.showListOfValues("street_name");
             }
         }
 
@@ -109,19 +117,20 @@ export class KundeService extends Form
         let lov:ListOfValues = null;
         let record:number = this.addresses.record;
         let zipcode:string = this.addresses.getValue(record,"zip_code");
+        let stname:string = this.addresses.getValue(record,"street_name");
 
         if (zipcode != null && zipcode.trim().length > 0)
         {
-            console.log("LOV with zipcode");
             lov = 
             {
                 minlen: 2,
+                value: stname,
                 autoquery: true,
                 title: "Street Names",
                 case: Case.mixed,
                 sql: 
                     `
-                    select street_name, street_name from ks.street_names
+                    select street_name, zip_code||' '||street_name from ks.street_names
                     where zip_code = :zipcode 
                     and to_tsvector('danish',street_name) @@ to_tsquery('danish',:filter)
                     `,
@@ -134,12 +143,13 @@ export class KundeService extends Form
             lov = 
             {
                 minlen: 2,
+                value: stname,
                 autoquery: true,
                 title: "Street Names",
                 case: Case.mixed,
                 sql: 
                     `
-                    select street_name, street_name from ks.street_names
+                    select street_name, zip_code||' '||street_name from ks.street_names
                     where to_tsvector('danish',street_name) @@ to_tsquery('danish',:filter)
                     `,
                 fieldmap: new Map<string,string>().set("street_name","street_name")
