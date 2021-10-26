@@ -75,7 +75,7 @@ export class KundeService extends Form
                 let stnames:number = await this.execute(stmt,true,true);
                 console.log("SteetNames#: "+stnames);
 
-                this.addresses.showListOfValues("street_name");
+                //this.addresses.showListOfValues("street_name");
             }
         }
 
@@ -106,9 +106,13 @@ export class KundeService extends Form
     @listofvalues("addresses.street_name")
     public streetNames() : ListOfValues
     {
+        console.log("LOV: "+this.constructor.name);
+        console.log("ADDR: "+this.addresses);
+
         let lov:ListOfValues = null;
-        let record:number = this.addresses.record;
-        let zipcode:string = this.addresses.getValue(record,"zip_code");
+        //let record:number = this.addresses.record;
+        //let zipcode:string = this.addresses.getValue(record,"zip_code");
+        let zipcode:string = "3520";
 
         if (zipcode != null && zipcode.trim().length > 0)
         {
