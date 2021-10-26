@@ -94,13 +94,14 @@ export class KundeService extends Form
         if (event.block == "addresses")
         {
             await this.addresses.executequery();
-            if (this.addresses.empty()) this.addresses.enterquery(true);
+            if (this.addresses.empty()) this.enterquery();
             return(false);
         }
 
         if (event.block != "addresses")
         {
-            this.addresses.sendKey(keymap.executequery);
+            await this.addresses.sendKey(keymap.executequery);
+            if (this.addresses.empty()) this.enterquery();
             return(false);
         }
 
