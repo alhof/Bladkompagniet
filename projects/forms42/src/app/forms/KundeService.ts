@@ -121,7 +121,7 @@ export class KundeService extends Form
                 case: Case.mixed,
                 sql: 
                     `
-                    select street_name from ks.street_names
+                    select street_name, street_name from ks.street_names
                     where zip_code = :zipcode 
                     and to_tsvector('danish',street_name) @@ to_tsquery('danish',:filter)
                     `,
@@ -139,7 +139,7 @@ export class KundeService extends Form
                 case: Case.mixed,
                 sql: 
                     `
-                    select street_name from ks.street_names
+                    select street_name, street_name from ks.street_names
                     where to_tsvector('danish',street_name) @@ to_tsquery('danish',:filter)
                     `,
                 fieldmap: new Map<string,string>().set("street_name","street_name")
