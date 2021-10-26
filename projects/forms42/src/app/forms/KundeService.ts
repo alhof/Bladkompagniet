@@ -106,16 +106,13 @@ export class KundeService extends Form
     @listofvalues("addresses.street_name")
     public streetNames() : ListOfValues
     {
-        console.log("LOV: "+this.constructor.name);
-        console.log("ADDR: "+this.addresses);
-
         let lov:ListOfValues = null;
-        //let record:number = this.addresses.record;
-        //let zipcode:string = this.addresses.getValue(record,"zip_code");
-        let zipcode:string = "3520";
+        let record:number = this.addresses.record;
+        let zipcode:string = this.addresses.getValue(record,"zip_code");
 
         if (zipcode != null && zipcode.trim().length > 0)
         {
+            console.log("LOV with zipcode");
             lov = 
             {
                 minlen: 2,
@@ -124,9 +121,9 @@ export class KundeService extends Form
                 case: Case.mixed,
                 sql: 
                     `
-                    select count(distinct street_name) from ks.order_addresses
+                    select street_name from ks.street_names
                     where zip_code = :zipcode 
-                    and to_tsvector('danish',street_name) @@ to_tsquery('danish',:stname)
+                    and to_tsvector('danish',street_name) @@ to_tsquery('danish',:filter)
                     `,
                 fieldmap: new Map<string,string>().set("street_name","street_name"),
                 bindvalues: [{name: "zipcode", value: zipcode, type: Column.varchar}]    
@@ -142,8 +139,8 @@ export class KundeService extends Form
                 case: Case.mixed,
                 sql: 
                     `
-                    select count(distinct street_name) from ks.order_addresses
-                    where to_tsvector('danish',street_name) @@ to_tsquery('danish',:stname)
+                    select street_name from ks.street_names
+                    where to_tsvector('danish',street_name) @@ to_tsquery('danish',:filter)
                     `,
                 fieldmap: new Map<string,string>().set("street_name","street_name")
             }
