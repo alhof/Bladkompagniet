@@ -17,6 +17,8 @@ import { alias, Block, table, column, key, Column } from "forms42";
 @column({name: "rettet_dato"   , type: Column.datetime})
 @column({name: "rettet_af"     , type: Column.varchar })
 
+@key("primary",true,"id")
+
 
 
 export class Addresses extends Block

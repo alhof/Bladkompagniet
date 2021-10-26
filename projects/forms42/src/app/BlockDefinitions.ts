@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { actions } from './blocks/Actions';
+import { Actions } from './blocks/Actions';
 import { Addresses } from './blocks/Addresses';
 
 /*
