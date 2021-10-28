@@ -91,6 +91,8 @@ export class KundeService extends Form
     @keytrigger(keymap.executequery)
     public async alwaysQuery(event:KeyTriggerEvent) : Promise<boolean>
     {
+        console.log("execute query "+event.block);
+
         if (event.block == "addresses")
         {
             await this.addresses.executequery();
@@ -100,8 +102,9 @@ export class KundeService extends Form
 
         if (event.block != "addresses")
         {
-            await this.addresses.sendKey(keymap.executequery);
-            if (this.addresses.empty()) this.enterquery();
+            await this.addresses.executequery();
+            if (this.addresses.empty()) 
+                this.addresses.enterquery();
             return(false);
         }
 
@@ -125,7 +128,7 @@ export class KundeService extends Form
                 minlen: 2,
                 value: stname,
                 autoquery: true,
-                modfunc: ts.getWordList,
+                modfunc: ts.listOfValues,
                 title: "Street Names",
                 case: Case.mixed,
                 sql: 
@@ -145,7 +148,7 @@ export class KundeService extends Form
                 minlen: 2,
                 value: stname,
                 autoquery: true,
-                modfunc: ts.getWordList,
+                modfunc: ts.listOfValues,
                 title: "Street Names",
                 case: Case.mixed,
                 sql: 
@@ -280,6 +283,20 @@ export class KundeService extends Form
         while(address.indexOf("  ") >= 0) address = address.replace("  "," ");
 
         this.addresses.setValue(event.record,"address",address);
+        return(true);
+    }
+
+
+    @keytrigger(keymap.zoom)
+    public async allActions(event:KeyTriggerEvent) : Promise<boolean>
+    {
+        if (event.block == "actions" && !this.actions.empty())
+        {
+            let params:Map<string,number> = new Map<string,number>();
+            params.set("id",this.actions.getValue(event.record,"id"));
+            this.callform("ActionDetails",params);
+        }
+
         return(true);
     }
 }

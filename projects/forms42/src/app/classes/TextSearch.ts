@@ -14,33 +14,36 @@ export class TextSearch
     }
 
 
-    public getWordList(crit:string, trunc?:boolean) : string
+    public listOfValues(crit:string) : string
+    {
+        crit = crit.trim();
+        crit = crit.replace("*","");
+        crit = crit.replace("%","");
+
+        let words:string[] = crit.split(" ");
+        crit = "";
+
+        for (let i = 0; i < words.length; i++) 
+            crit += "& "+words[i]+":* ";
+        
+        return(crit.substr(2).trim());
+    }
+
+
+    public getWordList(crit:string) : string
     {
         if (crit == null) return(null);
-        if (trunc == null) trunc = false;
         let words:string[] = crit.split(" ");
 
         crit = "";
 
-        if (trunc)
+        for (let i = 0; i < words.length; i++) 
         {
-            for (let i = 0; i < words.length; i++) 
-            {
-                crit += "& "+words[i]+":* ";
-            }
+            if (words[i].endsWith("*")) crit += "& "+words[i]+":* ";
+            else if (words[i].endsWith("%")) crit += "& "+words[i]+":* ";
+            else crit += "& "+words[i]+" ";
         }
-        else
-        {
-            for (let i = 0; i < words.length; i++) 
-            {
-                if (words[i].endsWith("*")) crit += "& "+words[i]+":* ";
-                else if (words[i].endsWith("%")) crit += "& "+words[i]+":* ";
-                else crit += "& "+words[i]+" ";
-            }
-        }
-
 
         return(crit.substr(2).trim());
-
     }
 }

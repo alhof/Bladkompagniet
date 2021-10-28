@@ -28,6 +28,7 @@ import { ActionDetails } from './forms/ActionDetails';
 })
 
 
-@form(KundeService, "kundeservice", "/kundeservice")
+@form(KundeService, "KundeService", "/kundeservice")
+@form(ActionDetails, "ActionDetails", "/actiondetails",false)
 
 export class ApplicationModule {}
