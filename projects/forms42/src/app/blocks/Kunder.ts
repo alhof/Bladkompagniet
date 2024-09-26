@@ -1,7 +1,7 @@
 import { key, Block, table, column, Column, field, FieldType, trigger, Trigger, FieldTriggerEvent } from 'forms42';
 
 @key("primary",true,"id")
-@table({name: "bk_kunder", limit: 'limit 100'})
+@table({name: "ks.bk_kunder", order: "navn"})
 
 @column({name: "id"                 , type: Column.integer})
 @column({name: "abon_nr"            , type: Column.integer})
@@ -9,7 +9,7 @@ import { key, Block, table, column, Column, field, FieldType, trigger, Trigger, 
 @column({name: "navn"               , type: Column.varchar})
 @column({name: "co_navn"            , type: Column.varchar})
 @column({name: "supl_adr"           , type: Column.varchar})
-@column({name: "afleverings_kode"   , type: Column.varchar})
+@column({name: "afleverings_kode"   , type: Column.integer})
 @column({name: "afleverings_tekst"  , type: Column.varchar})
 @column({name: "gadenavn"           , type: Column.varchar})
 @column({name: "hus_nr"             , type: Column.integer})
@@ -18,7 +18,7 @@ import { key, Block, table, column, Column, field, FieldType, trigger, Trigger, 
 @column({name: "side_lejlighed"     , type: Column.varchar})
 @column({name: "postnr"             , type: Column.varchar})
 @column({name: "postdistrikt"       , type: Column.varchar})
-@column({name: "abde_id"            , type: Column.varchar})
+@column({name: "abde_id"            , type: Column.integer})
 
 @field({name: "adresse", type: FieldType.text })
 

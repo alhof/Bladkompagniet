@@ -1,0 +1,11 @@
+
+.actions {
+    display: flex;
+    margin-top: 24px;
+    margin-bottom: 24px;
+    padding: 16px 12px;
+    border-radius: 4px;
+    background: #f2f6f9;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.23), 0px 8px 16px rgba(0, 0, 0, 0.08);
+  }
+  

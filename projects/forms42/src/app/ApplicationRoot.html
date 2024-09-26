@@ -1,10 +1,8 @@
 <table class="page">
-  <tr class="topbar" [ngStyle]="{'background-color': barcolor}">
+  <tr class="topbar">
     <td>
-      <button class="toggle-button" [ngStyle]="{'color': btncolor, 'background-color': barcolor}" (click)="sidenav=!sidenav">
-        <div class="line" [ngStyle]="{'border-color': btncolor}"></div>
-        <div class="line" [ngStyle]="{'border-color': btncolor}"></div>
-        <div class="line" [ngStyle]="{'border-color': btncolor}"></div>
+      <button class="toggle-button" (click)="sidenav=!sidenav">
+        <svg fill="#fff" width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3 7a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 13a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path></svg>
       </button>
     </td>
 
@@ -15,7 +13,7 @@
     </td>
 
     <td>
-      <button class="close-button" [ngStyle]="{'color': btncolor, 'background-color': barcolor}" (click)="close();">X</button>
+      <button class="close-button" (click)="close();">&times;</button>
     </td>
   </tr>
 
@@ -27,7 +25,7 @@
     </td>
 
     <td class="form">
-      <table class="form">
+      <table class="formarea-container">
         <formarea></formarea>
       </table>
     </td>

@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 
+import { Actions } from './blocks/Actions';
+import { Addresses } from './blocks/Addresses';
+
 /*
     Typescript doesn't like classes with annotations/decorators (@)
     that are not referenced. The only purpose of this class, is to hold

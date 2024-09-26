@@ -1,113 +1,302 @@
 import { Component } from '@angular/core';
-import { Kunder } from '../blocks/Kunder';
-import { Ordrer } from '../blocks/Ordrer';
-import { Form, Block, block, field, FieldType, trigger, Trigger, keytrigger,  KeyTriggerEvent, FieldTriggerEvent, SQLTriggerEvent, Condition, Column, DateUtils, keymap, join, show } from 'forms42';
-
+import { Actions } from '../blocks/Actions';
+import { Addresses } from '../blocks/Addresses';
+import { TextSearch } from '../classes/TextSearch';
+import { Form, block, connect, join, field, FieldType, trigger, Trigger, keytrigger, keymap, listofvalues, ListOfValues, KeyTriggerEvent, SQLTriggerEvent, Statement, Condition, Column, Case } from 'forms42';
 
 
 @Component({
-    templateUrl: "kundeservice.html",
-    styleUrls: ['kundeservice.css']
+    templateUrl: "KundeService.html",
+    styleUrls: ['KundeService.css']
 })
 
-
-@field({name: "ctrl.type",      type: FieldType.text })
-@field({name: "ctrl.fra_dato",  type: FieldType.date })
-@field({name: "ctrl.til_dato",  type: FieldType.date })
-
-@join({master: {alias: "kunder", key: "primary"}, detail: {alias: "ordrer", key: "kunde"}})
+@field({name: "addresses.address", type: FieldType.text })
+@join({master: {alias: "addresses", key: "primary"}, detail: {alias: "actions", key: "address"}})
 
 
 export class KundeService extends Form
 {
-    @block({component: Kunder})
-    private kunder:Kunder = null;
+    @block({component: Addresses, databaseopts: {insert: false, update: false, delete: false, query: true}})
+    private addresses:Addresses = null;
 
-    @block({component: Ordrer})
-    private ordrer:Ordrer = null;
+    @block({component: Actions, databaseopts: {insert: false, update: false, delete: false, query: true}})
+    private actions:Actions = null;
 
 
-    @trigger(Trigger.PostChange,"ctrl")
-    public async ctrlChange(event:FieldTriggerEvent) : Promise<boolean>
+    @connect
+    public async onConnect() : Promise<boolean>
     {
-        if (this.connected && !this.kunder.querymode)
-            this.ordrer.executequery();
+        this.addresses.enterquery();
+        return(true);
+    }
+
+
+    @keytrigger(keymap.clearform)
+    public async clrform(event:KeyTriggerEvent) : Promise<boolean>
+    {
+        await this.clear();
+        this.addresses.enterquery();
+        return(false);
+    }
+
+
+    @keytrigger(keymap.nextfield)
+    public async completeStreet(event:KeyTriggerEvent) : Promise<boolean>
+    {
+        if (this.addresses.querymode && event.field == "street_name")
+        {
+            let ts:TextSearch = new TextSearch();
+
+            let stname:string = this.addresses.getValue(event.record,event.field);
+            let zipcode:string = this.addresses.getValue(event.record,"zip_code");
+
+            stname = ts.getWordList(stname);
+
+            if (stname != null && stname.trim().length > 0)
+            {
+                let stmt:Statement = null;
+
+                if (zipcode != null && zipcode.trim().length > 0)
+                {
+                    stmt = new Statement(
+                        `
+                        select street_name from ks.street_names
+                        where zip_code = :zipcode 
+                        and to_tsvector('danish',street_name) @@ to_tsquery('danish',:stname)
+                        `
+                    ).bind("zipcode",zipcode,Column.varchar).bind("stname",stname,Column.varchar);
+                }
+                else
+                {
+                    stmt = new Statement(
+                        `
+                        select street_name from ks.street_names
+                        where to_tsvector('danish',street_name) @@ to_tsquery('danish',:stname)
+                        `
+                    ).bind("stname",stname,Column.varchar);
+                }
+
+                stmt.rows(2);
+                let stnames:string[] = await this.execute(stmt,false,false);
+
+                if (stnames.length == 1) this.addresses.setValue(0,"street_name",stnames[0]["street_name"]);
+                else this.addresses.showListOfValues("street_name");
+            }
+        }
 
         return(true);
     }
 
 
-    @trigger(Trigger.PreQuery,"kunder")
-    public async prequeryKunder(event:SQLTriggerEvent) : Promise<boolean>
+    @keytrigger(keymap.executequery)
+    public async alwaysQuery(event:KeyTriggerEvent) : Promise<boolean>
     {
+        console.log("execute query "+event.block);
+
+        if (event.block == "addresses")
+        {
+            await this.addresses.executequery();
+            if (this.addresses.empty()) this.enterquery();
+            return(false);
+        }
+
+        if (event.block != "addresses")
+        {
+            await this.addresses.executequery();
+            if (this.addresses.empty()) 
+                this.addresses.enterquery();
+            return(false);
+        }
+
+        return(true);
+    }
+
+
+    @listofvalues("addresses.street_name")
+    public streetNames() : ListOfValues
+    {
+        let lov:ListOfValues = null;
+        let ts:TextSearch = new TextSearch();
+        let record:number = this.addresses.record;
+        let zipcode:string = this.addresses.getValue(record,"zip_code");
+        let stname:string = this.addresses.getValue(record,"street_name");
+
+        if (zipcode != null && zipcode.trim().length > 0)
+        {
+            lov = 
+            {
+                minlen: 2,
+                value: stname,
+                autoquery: true,
+                modfunc: ts.listOfValues,
+                title: "Street Names",
+                case: Case.mixed,
+                sql: 
+                    `
+                    select street_name, zip_code||' '||street_name from ks.street_names
+                    where zip_code = :zipcode 
+                    and to_tsvector('danish',street_name) @@ to_tsquery('danish',:filter)
+                    `,
+                fieldmap: new Map<string,string>().set("street_name","street_name"),
+                bindvalues: [{name: "zipcode", value: zipcode, type: Column.varchar}]    
+            }
+        }
+        else
+        {
+            lov = 
+            {
+                minlen: 2,
+                value: stname,
+                autoquery: true,
+                modfunc: ts.listOfValues,
+                title: "Street Names",
+                case: Case.mixed,
+                sql: 
+                    `
+                    select street_name, zip_code||' '||street_name from ks.street_names
+                    where to_tsvector('danish',street_name) @@ to_tsquery('danish',:filter)
+                    `,
+                fieldmap: new Map<string,string>().set("street_name","street_name")
+            }
+        }
+
+        return(lov);
+    }
+
+
+    @trigger(Trigger.PreQuery,"addresses")
+    public async prequeryAddresses(event:SQLTriggerEvent) : Promise<boolean>
+    {
+        let streetq:string = null;
+        let addressq:string = null;
+
+        let ok:boolean = false;
+        let ts:TextSearch = new TextSearch();
+
+        this.addresses.searchfilter.forEach((filter) =>
+        {
+            if (filter.name == "address") 
+            {
+                ok = true;
+                addressq = ts.getWordList(filter.value);
+            }
+
+            if (filter.name == "street_name") 
+            {
+                ok = true;
+                streetq = ts.getWordList(filter.value);
+            }
+        });
+
+        this.actions.searchfilter.forEach((filter) =>
+        {
+            if (filter.name == "name") ok = true;
+            if (filter.name == "order_reference") ok = true;
+        });
+
+        if (!ok)
+        {
+            this.alert("Der skal søges på mindst et af felterne navn, adresse, abonent eller konto");
+            return(false);
+        }
+
         // Adresse is not a database field
         // and not set as condition
-        this.kunder.searchfilter.forEach((filter) =>
+        this.addresses.searchfilter.forEach((filter) =>
         {
-            if (filter.name == 'adresse')
-                event.stmt.whand(filter.name,filter.value);
+            if (filter.name == 'address')
+                event.stmt.whand(filter.name,'"'+filter.value+'"');
         });
 
         let conditions:Condition[] = event.stmt.getCondition()?.split();
 
-        conditions.forEach((cond) =>
+        if (conditions) conditions.forEach((cond) =>
         {
-            if (cond.column == 'navn')
-                cond.setCondition("to_tsvector('danish',navn) @@ websearch_to_tsquery('danish',:"+cond.placeholder+")");
+            if (cond.column == 'address')
+            {
+                cond.setValue(addressq);
+                let tsquery:string = ts.getQueryFunction();
+                let columns:string = "coalesce(street_name,' ')||' '||house_number||coalesce(house_letter,' ')||' '||coalesce(floor::varchar,' ')||' '||coalesce(apartment,' ')||' '||coalesce(Zip_Code,' ')||' '||coalesce(City,' ')";
+                cond.setCondition("to_tsvector('danish',"+columns+") @@ "+tsquery+"('danish',:"+cond.placeholder+")");
+            }
 
-            if (cond.column == 'adresse')
-                cond.setCondition("to_tsvector('danish',coalesce(gadenavn,' ')||' '||coalesce(postnr,' ')||' '||coalesce(postdistrikt,' ')||' '||coalesce(hus_nr::varchar,' ')||' '||coalesce(litra,' ')||' '||coalesce(etage,' ')) @@ websearch_to_tsquery('danish',:"+cond.placeholder+")");
+            if (cond.column == 'street_name')
+            {
+                cond.setValue(streetq);
+                let tsquery:string = ts.getQueryFunction();
+                let columns:string = "street_name";
+                cond.setCondition("to_tsvector('danish',"+columns+") @@ "+tsquery+"('danish',:"+cond.placeholder+")");
+            }
         });
 
         return(true);
     }
 
 
-    @trigger(Trigger.PreQuery,"ordrer")
-    public async prequeryOrdrer(event:SQLTriggerEvent) : Promise<boolean>
+    @trigger(Trigger.PreQuery,"actions")
+    public async prequeryActions(event:SQLTriggerEvent) : Promise<boolean>
     {
-        let dates:DateUtils = new DateUtils();
-        let ctrl:Block = this.getBlock("ctrl");
+        let nameq:string = null;
+        let ts:TextSearch = new TextSearch();
 
-        let datefr:string = ">= "+dates.format(ctrl.getValue(0,"fra_dato"));
-        let dateto:string = ">= "+dates.format(ctrl.getValue(0,"til_dato"));
+        this.actions.searchfilter.forEach((filter) =>
+        {
+            if (filter.name == "name") 
+            {
+                nameq = ts.getWordList(filter.value);
+            }
+        });
 
-        event.stmt.whand("udkomst_dato",datefr,Column.date);
-        event.stmt.whand("udkomst_dato",dateto,Column.date);
+        let conditions:Condition[] = event.stmt.getCondition()?.split();
 
-        let type:string = ctrl.getValue(0,"type");
-
-        if (type != null && type.length > 0)
-            event.stmt.whand("subtype",type.toUpperCase());
+        if (conditions) conditions.forEach((cond) =>
+        {
+            if (cond.column == 'name')
+            {
+                cond.setValue(nameq);
+                let tsquery:string = ts.getQueryFunction();
+                let columns:string = "name";
+                cond.setCondition("to_tsvector('danish',"+columns+") @@ "+tsquery+"('danish',:"+cond.placeholder+")");
+           }
+        });
 
         return(true);
     }
 
 
-    @show
-    public async init() : Promise<boolean>
+    @trigger(Trigger.PostQuery)
+    public async address(event:SQLTriggerEvent) : Promise<boolean>
     {
-        let ctrl:Block = this.getBlock("ctrl");
-        await ctrl.createControlRecord();
+        if (event.block != "addresses")
+          return(true);
+          
+        let address:string = "";
+        address += this.addresses.getValue(event.record,"street_name")+" "; 
+        address += this.addresses.getValue(event.record,"house_number"); 
+        address += this.addresses.getValue(event.record,"house_letter")+" ";
+        address += this.addresses.getValue(event.record,"floor")+" "; 
+        address += this.addresses.getValue(event.record,"apartment")+" ";
+        address += this.addresses.getValue(event.record,"zip_code")+" ";
+        address += this.addresses.getValue(event.record,"city")+" ";
 
-        ctrl.setFieldDefinition({name: "type", type: FieldType.dropdown});
+        address = address.trim();
+        while(address.indexOf("  ") >= 0) address = address.replace("  "," ");
 
-        let types:Set<string> = new Set<string>();
+        this.addresses.setValue(event.record,"address",address);
+        return(true);
+    }
 
-        types.add("");
-        types.add("Salg");
-        types.add("Abon");
-        types.add("Post");
-        types.add("Depo");
 
-        ctrl.setPossibleValues("type",types,true);
-        
-        let fra:Date = new Date();
-        let til:Date = new Date();
-        fra.setDate(fra.getDate()-7);
+    @keytrigger(keymap.zoom)
+    public async allActions(event:KeyTriggerEvent) : Promise<boolean>
+    {
+        if (event.block == "actions" && !this.actions.empty())
+        {
+            let params:Map<string,number> = new Map<string,number>();
+            params.set("id",this.actions.getValue(event.record,"id"));
+            this.callform("ActionDetails",params);
+        }
 
-        ctrl.setValue(0,"fra_dato",fra);
-        ctrl.setValue(0,"til_dato",til);
         return(true);
     }
 }
